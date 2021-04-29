@@ -1,4 +1,4 @@
-import express from "express"; 
+import express from "express";
 import morgan from 'morgan';
 import cors from 'cors';
 import 'dotenv/config.js';
@@ -8,12 +8,15 @@ import path from 'path';
 // Wenn ich zu URL-Path Zugang haben will in ES6 (s.u. const __dirname = ...), 
 // muss ich hier built-in module of NodeJS importieren
 import url from 'url';
+// Parse Cookie header and populate req.cookies https://www.npmjs.com/package/cookie-parser
+import cookieParser from 'cookie-parser';
 
 /* routes */
 import userRouter from './routes/users.js';
 import commentsRouter from './routes/comments.js';
 import flavorsRouter from './routes/flavors.js';
 import locationRouter from './routes/locations.js';
+import authRouter from './routes/auth.js';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const publicDir = path.join(__dirname, 'public');
@@ -24,7 +27,10 @@ const port = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev')); 
 }
-app.use(cors({ origin: '*', credentials: true}))
+// to be able to receive and send Cookie in network, need origin (http of frontend) and 
+// credentials set to true; siehe credentials settings in const options in signup.js in frontend
+app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
+app.use(cookieParser());
 app.use(express.json());
 
 /* middlewares */
@@ -32,6 +38,7 @@ app.use('/users', userRouter);
 app.use('/comments', commentsRouter);
 app.use('/flavors', flavorsRouter);
 app.use('/locations', locationRouter);
+app.use('/auth', authRouter);
 
 app.use('/', (req, res) => res.sendFile('index.html', { root: publicDir }));
 

@@ -35,18 +35,6 @@ version: v1
                       ]
                     }
                   ]
-    post:
-      description: Create one user
-      response: 201
-      body:
-        application/json:
-          type: |
-            {
-              name: "....",
-              email: "...",
-              password: "..." 
-            }
-
   /{id}:
     get:
       description: Retrieve one specific user
@@ -78,44 +66,6 @@ version: v1
                     ]
                   }
                 }
-    put:
-      description: Update one user
-      response: 200
-      body:
-        application/json:
-          type: |
-            {
-              {
-                "_id": "7a9427648b0beebeb69579cc",
-                "name": "Max Mustermann",
-                "email": "max@posteo.de",
-                "comments": [
-                    {
-                      "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
-                    },
-                    {
-                      "text": "At vero eos et accusam et justo duo doloes."
-                    }
-                ],
-                "favorite_locations": [
-                    "6089c00433fc7d0a68c927ae",
-                    "60867e1920fc8b983cbc9312"
-                ],
-                "favorite_flavors": [
-                    "6089bf2833fc7d0a68c927ad",
-                    "608a8ebab2523447006b3b68"
-                ]
-              }
-            }
-    delete:
-      description: Delete one user
-      response: 200
-      body:
-        application/json:
-          type: |
-            { 
-              "success": "User with id of ... was deleted"
-            }
     /infos:
       get:
           description: Retrieve all infos (comments, favorite_locations, favorite_flavors) for one specific user
@@ -264,6 +214,7 @@ version: v1
             { 
               "success": "Comment with id of ... was deleted"
             }
+
 /locations:
   /:
     get:
@@ -382,6 +333,7 @@ version: v1
             { 
               "success": "Location with id of ... was deleted"
             }
+
 /flavors:
   /:
     get:
@@ -478,15 +430,69 @@ version: v1
               "success": "Flavor with id of ... was deleted"
             }
 
+/auth:
+  /signup:
+    post:
+      description: Create one user
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+              name: "....",
+              email: "...",
+              password: "..." 
+            }
 
+  /signin:  
+    post:
+      description: Create one user
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+              email: "...",
+              password: "..." 
+            }
 
-
-
-
-
-
-
-
-
-
-
+  /user:
+    /{id}:
+      put:
+        description: Update one user
+        response: 200
+        body:
+          application/json:
+            type: |
+              {
+                {
+                  "_id": "7a9427648b0beebeb69579cc",
+                  "name": "Max Mustermann",
+                  "email": "max@posteo.de",
+                  "comments": [
+                      {
+                        "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
+                      },
+                      {
+                        "text": "At vero eos et accusam et justo duo doloes."
+                      }
+                  ],
+                  "favorite_locations": [
+                      "6089c00433fc7d0a68c927ae",
+                      "60867e1920fc8b983cbc9312"
+                  ],
+                  "favorite_flavors": [
+                      "6089bf2833fc7d0a68c927ad",
+                      "608a8ebab2523447006b3b68"
+                  ]
+                }
+              }
+      delete:
+        description: Delete one user
+        response: 200
+        body:
+          application/json:
+            type: |
+              { 
+                "success": "User with id of ... was deleted"
+              }
