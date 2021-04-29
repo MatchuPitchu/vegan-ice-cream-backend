@@ -96,7 +96,7 @@ export const updateFlavor = async (req, res) => {
     }
   };
   
-  // user can delete his added flavor
+  // admin can only delete his added flavor
   export const deleteFlavor = async (req, res) => {
     try {
       const { id } = req.params;

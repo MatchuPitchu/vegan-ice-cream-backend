@@ -1,0 +1,492 @@
+#%RAML 1.0
+---
+title: vegan-ice-cream
+version: v1
+
+/users:
+  /:
+    get:
+        description: Retrieve all users
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "_id": "7a9427648b0beebeb69579cc",
+                      "name": "Max Mustermann",
+                      "email": "max@posteo.de",
+                      "comments": [
+                          {
+                            "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
+                          },
+                          {
+                            "text": "At vero eos et accusam et justo duo doloes."
+                          }
+                      ],
+                      "favorite_locations": [
+                          "6089c00433fc7d0a68c927ae",
+                          "60867e1920fc8b983cbc9312"
+                      ],
+                      "favorite_flavors": [
+                          "6089bf2833fc7d0a68c927ad",
+                          "608a8ebab2523447006b3b68"
+                      ]
+                    }
+                  ]
+    post:
+      description: Create one user
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+              name: "....",
+              email: "...",
+              password: "..." 
+            }
+
+  /{id}:
+    get:
+      description: Retrieve one specific user
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  {
+                    "_id": "7a9427648b0beebeb69579cc",
+                    "name": "Max Mustermann",
+                    "email": "max@posteo.de",
+                    "comments": [
+                        {
+                          "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
+                        },
+                        {
+                          "text": "At vero eos et accusam et justo duo doloes."
+                        }
+                    ],
+                    "favorite_locations": [
+                        "6089c00433fc7d0a68c927ae",
+                        "60867e1920fc8b983cbc9312"
+                    ],
+                    "favorite_flavors": [
+                        "6089bf2833fc7d0a68c927ad",
+                        "608a8ebab2523447006b3b68"
+                    ]
+                  }
+                }
+    put:
+      description: Update one user
+      response: 200
+      body:
+        application/json:
+          type: |
+            {
+              {
+                "_id": "7a9427648b0beebeb69579cc",
+                "name": "Max Mustermann",
+                "email": "max@posteo.de",
+                "comments": [
+                    {
+                      "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
+                    },
+                    {
+                      "text": "At vero eos et accusam et justo duo doloes."
+                    }
+                ],
+                "favorite_locations": [
+                    "6089c00433fc7d0a68c927ae",
+                    "60867e1920fc8b983cbc9312"
+                ],
+                "favorite_flavors": [
+                    "6089bf2833fc7d0a68c927ad",
+                    "608a8ebab2523447006b3b68"
+                ]
+              }
+            }
+    delete:
+      description: Delete one user
+      response: 200
+      body:
+        application/json:
+          type: |
+            { 
+              "success": "User with id of ... was deleted"
+            }
+    /infos:
+      get:
+          description: Retrieve all infos (comments, favorite_locations, favorite_flavors) for one specific user
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    [
+                      {
+                        "comments": [
+                            {
+                                "_id": "608a7d7665c77c2f90568110",
+                                "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes.",
+                                "grade_quality": 3,
+                                "grade_vegan_offer": 6,
+                                "flavors_referred": [
+                                    "6089bf2833fc7d0a68c927ad",
+                                ],
+                                "user_id": "7a9427648b0beebeb69579cc",
+                                "location_id": "60867e1920fc8b983cbc9327",
+                                "date": "2012-03-22T23:20:16.000Z"
+                            }
+                        ],
+                        "favorite_locations": [
+                            {
+                                "_id": "6089c00433fc7d0a68c927ae",
+                                "name": "Prinzen Eis",
+                                "address": {
+                                    "geo": {
+                                        "lat": 52.521918,
+                                        "lng": 13.413215
+                                    },
+                                    "street": "Alexanderplatz",
+                                    "number": 14,
+                                    "zipcode": 12318,
+                                    "city": "Berlin",
+                                    "country": "Deutschland"
+                                },
+                                "comments_list": [],
+                                "flavors_listed": [],
+                                "location_url": "http://www.prinzen-eis.de",
+                                "location_num": 2,
+                                "location_grade": 1,
+                                "location_grade_vegan_offer": 1
+                            }
+                        ],
+                        "favorite_flavors": [
+                            {
+                                "_id": "6089bf2833fc7d0a68c927ad",
+                                "name": "Mango",
+                                "ice_color": {
+                                    "color_primary": "#000000",
+                                    "color_secondary": "#4a4a4a",
+                                    "color_tertiary": "fff"
+                                },
+                                "comment_id": [],
+                                "type_cream_ice": false,
+                                "type_fruit_ice": true
+                            }
+                        ]
+                      }
+                    ]
+
+/comments:
+  /:
+    get:
+        description: Retrieve all comments
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "_id": "5a9427648b0beebeb69579cc",
+                      "user_id": {
+                          "name": "Max Mustermann"
+                      },
+                      "location_id": "60867e1920fc8b983cbc9327",
+                      "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo doloes.",
+                      "flavors_referred": [
+                          "6089bf2833fc7d0a68c927ad",
+                          "6089725cd5bc067c1805a338"
+                      ],
+                      "grade_quality": 1,
+                      "grade_vegan_offer": 5
+                      "date": "2012-03-26T23:20:16.000Z",
+                    }
+                  ]
+    post:
+      description: Create comment
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+                "_id": "608a7fb9c35c19437c02e01b",
+                "user_id": "7a9427648b0beebeb69579cc",
+                "location_id": "60867e1920fc8b983cbc9327",
+                "text": "At vero eos et accusam et justo duo doloes.",
+                "flavors_referred": ["6089bf2833fc7d0a68c927ad", "6089725cd5bc067c1805a338"],
+                "grade_quality": 1,
+                "grade_vegan_offer": 1
+                "date": "2012-04-13T23:20:16.000Z",
+            }
+  /{id}:
+    get:
+      description: Retrieve one specific comment
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                    "_id": "608a7fb9c35c19437c02e01b",
+                    "user_id": "7a9427648b0beebeb69579cc",
+                    "location_id": "60867e1920fc8b983cbc9327",
+                    "text": "At vero eos et accusam et justo duo doloes.",
+                    "flavors_referred": ["6089bf2833fc7d0a68c927ad", "6089725cd5bc067c1805a338"],
+                    "grade_quality": 1,
+                    "grade_vegan_offer": 1
+                    "date": "2012-04-13T23:20:16.000Z",
+                }
+    put:
+      description: Update one comment
+      response: 200
+      body:
+        application/json:
+          type: |
+            {
+              "_id": "608a7fb9c35c19437c02e01b",
+              "location_id": "60867e1920fc8b983cbc9327",
+              "text": "At vero eos et accusam et justo duo doloes.",
+              "flavors_referred": ["6089bf2833fc7d0a68c927ad", "6089725cd5bc067c1805a338"],
+              "grade_quality": 1,
+              "grade_vegan_offer": 1
+              "date": "2012-04-13T23:20:16.000Z",
+            }
+    delete:
+      description: Delete one comment
+      response: 200
+      body:
+        application/json:
+          type: |
+            { 
+              "success": "Comment with id of ... was deleted"
+            }
+/locations:
+  /:
+    get:
+        description: Retrieve all locations
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "_id": "60867e1920fc8b983cbc9327",
+                      "name": "Eisladen",
+                      "address": {
+                          "geo": {
+                              "lat": 52.4818618,
+                              "lng": 13.5274264
+                          },
+                          "street": "Trytest Straße",
+                          "number": 2,
+                          "zipcode": 10000,
+                          "city": "Berlin",
+                          "country": "Deutschland"
+                      },
+                      "comments_list": [],
+                      "flavors_listed": [],
+                      "location_url": "http://www.testladen.de",
+                      "location_num": 1,
+                      "location_grade": 3,
+                      "location_grade_vegan_offer": 5
+                    },
+                  ]
+    post:
+      description: Create location
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+              "_id": "608aaa51dde1e03614a1a7af",
+              "name": "Creamladen",
+              "address": {
+                  "geo": {
+                      "lat": 53.4818618,
+                      "lng": 13.5274264
+                  },
+                  "street": "Try Straße",
+                  "number": 5,
+                  "zipcode": 10000,
+                  "city": "Berlin",
+                  "country": "Deutschland"
+              },
+              "comments_list": [],
+              "flavors_listed": [],
+              "location_url": "http://www.creamladen.de",
+              "location_num": 8
+            }
+  /{id}:
+    get:
+      description: Retrieve one specific location
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "_id": "608aaa51dde1e03614a1a7af",
+                  "name": "Creamladen",
+                  "address": {
+                      "geo": {
+                          "lat": 53.4818618,
+                          "lng": 13.5274264
+                      },
+                      "street": "Try Straße",
+                      "number": 5,
+                      "zipcode": 10000,
+                      "city": "Berlin",
+                      "country": "Deutschland"
+                  },
+                  "comments_list": [],
+                  "flavors_listed": [],
+                  "location_url": "http://www.creamladen.de",
+                  "location_num": 8
+                }
+    put:
+      description: Update one location
+      response: 200
+      body:
+        application/json:
+          type: |
+            {
+              "_id": "608aaa51dde1e03614a1a7af",
+              "name": "Creamladen",
+              "address": {
+                  "geo": {
+                      "lat": 53.4818618,
+                      "lng": 13.5274264
+                  },
+                  "street": "Try Straße",
+                  "number": 5,
+                  "zipcode": 10000,
+                  "city": "Berlin",
+                  "country": "Deutschland"
+              },
+              "comments_list": [],
+              "flavors_listed": [],
+              "location_url": "http://www.creamladen.de",
+              "location_num": 8
+            }
+    delete:
+      description: Delete one comment
+      response: 200
+      body:
+        application/json:
+          type: |
+            { 
+              "success": "Location with id of ... was deleted"
+            }
+/flavors:
+  /:
+    get:
+        description: Retrieve all flavors
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "_id": "6089725cd5bc067c1805a338",
+                      "name": "Vanille",
+                      "ice_color": {
+                          "color_primary": "#eeeeee",
+                          "color_secondary": "#ffffff",
+                          "color_tertiary": "cdcdcd"
+                      },
+                      "comment_id": [],
+                      "type_cream_ice": true,
+                      "type_fruit_ice": false
+                    }
+                  ]
+    post:
+      description: Create flavor
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+              "_id": "6089725cd5bc067c1805a338",
+              "name": "Vanille",
+              "ice_color": {
+                  "color_primary": "#eeeeee",
+                  "color_secondary": "#ffffff",
+                  "color_tertiary": "cdcdcd"
+              },
+              "comment_id": [],
+              "type_cream_ice": true,
+              "type_fruit_ice": false
+            }
+  /{id}:
+    get:
+      description: Retrieve one specific flavor
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "_id": "6089725cd5bc067c1805a338",
+                  "name": "Vanille",
+                  "ice_color": {
+                      "color_primary": "#eeeeee",
+                      "color_secondary": "#ffffff",
+                      "color_tertiary": "cdcdcd"
+                  },
+                  "comment_id": [],
+                  "type_cream_ice": true,
+                  "type_fruit_ice": false
+                }
+    put:
+      description: Update one location
+      response: 200
+      body:
+        application/json:
+          type: |
+            {
+              "_id": "608aaa51dde1e03614a1a7af",
+              "name": "Creamladen",
+              "address": {
+                  "geo": {
+                      "lat": 53.4818618,
+                      "lng": 13.5274264
+                  },
+                  "street": "Try Straße",
+                  "number": 5,
+                  "zipcode": 10000,
+                  "city": "Berlin",
+                  "country": "Deutschland"
+              },
+              "comments_list": [],
+              "flavors_listed": [],
+              "location_url": "http://www.creamladen.de",
+              "location_num": 8
+            }
+    delete:
+      description: Delete one flavor
+      response: 200
+      body:
+        application/json:
+          type: |
+            { 
+              "success": "Flavor with id of ... was deleted"
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+

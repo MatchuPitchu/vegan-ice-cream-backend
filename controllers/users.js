@@ -76,7 +76,7 @@ export const updateUser = async (req, res) => {
         { name, email, password, favorite_locations, favorite_flavors },
         { new: true }
       ).populate('_id', 'name', 'email', 'favorite_locations', 'favorite_flavors');
-    res.json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
