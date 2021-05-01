@@ -1,12 +1,14 @@
 import express from 'express';
 import { getAllUsers, getSingleUser, getAllInfosFromUser } from '../controllers/users.js';
+import verifyToken from '../middlewares/verifyToken.js';
 
 const userRouter = express.Router();
 
+// QUESTION: SET TO PRIVATE LATER IN HEROKU???
 userRouter.get('/', getAllUsers);
 userRouter.get('/:id', getSingleUser);
 
-// QUESTION: NEED TO PROTECT THIS WITH MIDDLEWARE verifyToken? OR CAN I SET SOME ROUTES LATER PRIVATE ON HEROKU?
-userRouter.get('/:id/infos', getAllInfosFromUser);
+// Only access to these pages if verifyToken passed
+userRouter.get('/:id/infos', verifyToken, getAllInfosFromUser);
 
 export default userRouter;

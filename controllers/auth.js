@@ -3,52 +3,46 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import { User } from '../models/Schemas.js';
 
-export const signUp = async (req, res) => {
+export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    //Do password validation in frontend and don't send to api
+    const { name, email, password, repeatPassword } = req.body;
     const foundUser = await User.findOne({ email });
     if (foundUser) throw new Error('Email already taken');
     // hash password before saving in DB: https://www.npmjs.com/package/bcrypt
-    const hashPassword = await bcrypt.hash(password, 5);
+    if (password !== repeatPassword) res.status(400).json('Please check whether you have entered the same password twice')
+    const hashPassword = await bcrypt.hash(password, 12);
     const { _id, name: userName } = await User.create({
       _id: new mongoose.Types.ObjectId(),
       name,
       email, 
       password: hashPassword 
     });
-    const token = jwt.sign({ _id, userName }, process.env.JWT_SECRET);
-    // res.cookie(name, value [, options]) http://expressjs.com/en/5x/api.html#res.cookie
-    const cookieOps = {};
-
-    // BEFORE RELEASE SET NODE_ENV TO "PRODCUTION"
-    if(process.env.NODE_ENV === 'production') {
-      cookieOps.secure = true
-    };
-    // in frontend I get back the token (in json file) -> than in frontend I can save token in localStorage
-    res.json({success: 'User created', id: _id, "user name": userName, token});
+    const token = jwt.sign(
+      { _id, email }, 
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+    // in frontend I receive token in json file -> there save token in localStorage
+    res.status(200).json({success: 'User created', id: _id, "user name": userName, token});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const signIn = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const foundUser = await User.findOne({ email }).select('+password');
-    if (!foundUser) throw new Error('User does not exist');
-    const match = await bcrypt.compare(password, foundUser.password);
-    if (!match) throw new Error('Password is incorrect');
+    if (!foundUser) throw new Error('This user account does not exist');
+    const passwordCheck = await bcrypt.compare(password, foundUser.password);
+    if (!passwordCheck) throw new Error('Password is incorrect');
     const token = jwt.sign(
-      { _id: foundUser._id, userName: foundUser.name },
-      process.env.JWT_SECRET
+      { _id: foundUser._id, email: foundUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
     );
-    const cookieOps = {};
-
-    // BEFORE RELEASE SET NODE_ENV TO "PRODCUTION"
-    if (process.env.NODE_ENV === 'production') {
-      cookieOps.secure = true;
-    }
-    res.cookie('token', token, cookieOps).json({ success: 'User signed in' });
+    res.status(200).json({ success: 'User signed in', id: _id, "user name": foundUser.name, token});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -83,18 +77,7 @@ export const deleteUser = async (req, res) => {
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: `User with id ${id} not found` });
     await User.deleteOne({ _id: id });
-
-    // QUESTION: ALSO NEED TO DELETE COOKIE/TOKEN???
-
     res.json({ success: `User with id of ${id} was deleted` });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const getUserInfo = async (req, res) => {
-  try {
-    res.send(req.user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -102,28 +85,8 @@ export const getUserInfo = async (req, res) => {
 
 export const approvedSession = async (req, res) => {
   try {
-    res.json({ success: 'Valid token' });
+    res.json({ success: 'Valid token', user: req.user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import express from 'express';
-// import { signUpBody } from '../joi/schemas.js';
-// // Express validator: checks content of input in forms https://express-validator.github.io/docs/
-// import { signUp, signIn, getUserInfo, approvedSession } from './auth.js';
-// import validateJoi from '../middlewares/validateJoi.js';
-// import verifyToken from '../middlewares/verifyToken.js';
-// import checkForErrors from '../middlewares/checkForErrors.js';
