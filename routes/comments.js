@@ -5,7 +5,7 @@ const commentsRouter = express.Router();
 
 commentsRouter.get('/', getAllComments);
 commentsRouter.get('/:id', getSingleComment);
-commentsRouter.post('/', createComment);
+commentsRouter.post('/:id', createComment);
 commentsRouter.put('/:id', updateComment);
 commentsRouter.delete('/:id', deleteComment);
 

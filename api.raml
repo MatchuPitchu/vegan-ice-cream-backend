@@ -156,22 +156,6 @@ version: v1
                       "date": "2012-03-26T23:20:16.000Z",
                     }
                   ]
-    post:
-      description: Create comment
-      response: 201
-      body:
-        application/json:
-          type: |
-            {
-                "_id": "608a7fb9c35c19437c02e01b",
-                "user_id": "7a9427648b0beebeb69579cc",
-                "location_id": "60867e1920fc8b983cbc9327",
-                "text": "At vero eos et accusam et justo duo doloes.",
-                "flavors_referred": ["6089bf2833fc7d0a68c927ad", "6089725cd5bc067c1805a338"],
-                "grade_quality": 1,
-                "grade_vegan_offer": 1
-                "date": "2012-04-13T23:20:16.000Z",
-            }
   /{id}:
     get:
       description: Retrieve one specific comment
@@ -190,6 +174,22 @@ version: v1
                     "grade_vegan_offer": 1
                     "date": "2012-04-13T23:20:16.000Z",
                 }
+    post:
+      description: Create comment
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+                "_id": "608a7fb9c35c19437c02e01b",
+                "user_id": "7a9427648b0beebeb69579cc",
+                "location_id": "60867e1920fc8b983cbc9327",
+                "text": "At vero eos et accusam et justo duo doloes.",
+                "flavors_referred": ["6089bf2833fc7d0a68c927ad", "6089725cd5bc067c1805a338"],
+                "grade_quality": 1,
+                "grade_vegan_offer": 1
+                "date": "2012-04-13T23:20:16.000Z",
+            }
     put:
       description: Update one comment
       response: 200
@@ -357,24 +357,6 @@ version: v1
                       "type_fruit_ice": false
                     }
                   ]
-    post:
-      description: Create flavor
-      response: 201
-      body:
-        application/json:
-          type: |
-            {
-              "_id": "6089725cd5bc067c1805a338",
-              "name": "Vanille",
-              "ice_color": {
-                  "color_primary": "#eeeeee",
-                  "color_secondary": "#ffffff",
-                  "color_tertiary": "cdcdcd"
-              },
-              "comment_id": [],
-              "type_cream_ice": true,
-              "type_fruit_ice": false
-            }
   /{id}:
     get:
       description: Retrieve one specific flavor
@@ -395,6 +377,24 @@ version: v1
                   "type_cream_ice": true,
                   "type_fruit_ice": false
                 }
+    post:
+      description: Create flavor
+      response: 201
+      body:
+        application/json:
+          type: |
+            {
+              "_id": "6089725cd5bc067c1805a338",
+              "name": "Vanille",
+              "ice_color": {
+                  "color_primary": "#eeeeee",
+                  "color_secondary": "#ffffff",
+                  "color_tertiary": "cdcdcd"
+              },
+              "comment_id": [],
+              "type_cream_ice": true,
+              "type_fruit_ice": false
+            }
     put:
       description: Update one location
       response: 200

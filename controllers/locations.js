@@ -62,7 +62,7 @@ export const createLocation = async (req, res)=> {
     };
 }
 
-// users and owners can update location data
+// users (logged in) and owners can update location data
 export const updateLocation = async (req, res) => {
     try {
       const { id } = req.params;
@@ -98,7 +98,8 @@ export const updateLocation = async (req, res) => {
             }
           },
           location_url
-        }
+        },
+        { new: true }
       )
       res.json(updatedLocation);
     } catch (error) {

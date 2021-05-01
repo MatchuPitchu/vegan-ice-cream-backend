@@ -25,8 +25,8 @@ export const getSingleFlavor = async (req, res)=> {
 
 export const createFlavor = async (req, res)=> {
     try {
+        const { id: comment_id } = req.params;
         const { 
-          comment_id,
           name,
           type_fruit_ice,
           type_cream_ice,
@@ -48,13 +48,11 @@ export const createFlavor = async (req, res)=> {
               color_tertiary,
             },
         });
-
         // Update array of flavors_referred with ref "Flavor" in Comment Schema in order to inform about creation of new flavor and link flavors to this certain comment
         // findOneAndUpdate() https://mongoosejs.com/docs/tutorials/findoneandupdate.html
         // Update Operators: https://docs.mongodb.com/manual/reference/operator/update/
-        const updateComment = await Comment.findOneAndUpdate({ _id: newFlavor.comment_id }, {"$push": { "flavors_referred": newFlavor._id }}  );
+        const updateComment = await Comment.findOneAndUpdate({ _id: comment_id }, {"$push": { "flavors_referred": newFlavor._id }}  );
         console.log(updateComment);
-
         res.status(201).json(newFlavor);
     } catch (error) {
         res.status(500).json({ error: error.message});
@@ -65,7 +63,7 @@ export const createFlavor = async (req, res)=> {
 // because when user add a new flavor, than flavor can be choosen by others and so updating would causing confusion
 export const updateFlavor = async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id: flavor_id } = req.params;
       const { 
         name,
         type_fruit_ice,
@@ -78,7 +76,7 @@ export const updateFlavor = async (req, res) => {
       } = req.body;
       // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
       const updatedFlavor = await Flavor.findOneAndUpdate(
-        { _id: id },
+        { _id: flavor_id },
         { 
           name,
           type_fruit_ice,

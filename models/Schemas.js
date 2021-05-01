@@ -12,7 +12,7 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true, select: false },
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
+  comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   favorite_locations: [{ type: Schema.Types.ObjectId, ref: 'Location'}],
   favorite_flavors: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}]
 });
@@ -22,9 +22,47 @@ const commentSchema = new Schema( {
   location_id: { type: Schema.Types.ObjectId, ref: 'Location', required: true },
   flavors_referred: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
   text: { type: String, required: true },
-  grade_quality: { type: Number, required: true },
-  grade_vegan_offer: { type: Number, required: true },
+  rating_quality: { type: Number, min: 0, max: 10, required: true},
+  rating_vegan_offer: { type: Number, min: 0, max: 10, required: true},
   date: { type: Date, default: Date.now }
+});
+
+/******** Calculation Average Rating ********/
+// creating new static methods for location schema
+commentSchema.statics.getAvgRatingQuality = async function (location_id) {
+  console.log('Calculating average rating quality ...');
+  const ratingAggregation = await this.aggregate([
+    { $match: { location_id } },
+    { $group: { _id: '$location_id', rating_quality: {$avg: '$rating_quality'} } }
+  ]);
+  try {
+    await this.model('Location').findByIdAndUpdate(location_id, {
+      location_rating_quality: Math.ceil(ratingAggregation[0].rating_quality)
+    });
+  } catch (error) {}
+};
+
+commentSchema.statics.getAvgRatingOffer = async function (location_id) {
+  console.log('Calculating average rating vegan offer ...');
+  const ratingAggregation = await this.aggregate([
+    { $match: { location_id } },
+    { $group: { _id: '$location_id', rating_vegan_offer: {$avg: '$rating_vegan_offer'} } }
+  ]);
+  try {
+    await this.model('Location').findByIdAndUpdate(location_id, {
+      location_rating_vegan_offer: Math.ceil(ratingAggregation[0].rating_vegan_offer)
+    });
+  } catch (error) {}
+};
+// event listener method is triggerd after I save smth
+commentSchema.post('save', function () {
+  Comment.getAvgRatingQuality(this.location_id);
+  Comment.getAvgRatingOffer(this.location_id);
+});
+// event listener method is triggerd before I remove smth
+commentSchema.pre('remove', function () {
+  Comment.getAvgRatingQuality(this.location_id);
+  Comment.getAvgRatingOffer(this.location_id);
 });
 
 const locationSchema = new Schema( {
@@ -44,28 +82,12 @@ const locationSchema = new Schema( {
   location_url: { type: String },
   comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   flavors_listed: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
-
-  // WHERE DO I INSERT QUERY AND UPDATE FUNCTION TO CALCULATE GRADES BASED ON USER COMMENTS???
-  location_grade_quality: { type: Number },
-  location_grade_vegan_offer: { type: Number }
+  location_rating_quality: { type: Number },
+  location_rating_vegan_offer: { type: Number }
 });
 
 // autoincrement location_num every time a new location is created
 locationSchema.plugin(AutoIncrement, {inc_field: 'location_num'});
-
-// // creating new static method for location schema
-// locationSchema.statics.getAverageGrade = async function () {
-//   const obj = await this.aggregate()
-// };
-// // event listener method is triggerd after I save smth
-// locationSchema.post('save', function () {
-//   locationSchema.getAverageGrade()
-// })
-
-// // event listener method is triggerd before I remove smth
-// locationSchema.pre('remove', function () {
-
-// })
 
 const colorValidator = (v) => (/^#([0-9a-f]{3}){1,2}$/i).test(v);
 

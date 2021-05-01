@@ -5,7 +5,7 @@ const flavorRouter = express.Router();
 
 flavorRouter.get('/', getAllFlavors);
 flavorRouter.get('/:id', getSingleFlavor);
-flavorRouter.post('/', createFlavor);
+flavorRouter.post('/:id', createFlavor);
 // flavorRouter.put('/:id', updateFlavor);
 flavorRouter.delete('/:id', deleteFlavor);
 

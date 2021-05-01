@@ -24,7 +24,8 @@ export const signUp = async (req, res) => {
     if(process.env.NODE_ENV === 'production') {
       cookieOps.secure = true
     };
-    res.cookie('token', token, cookieOps).json({success: 'User created', id: _id, "user name": userName});
+    // in frontend I get back the token (in json file) -> than in frontend I can save token in localStorage
+    res.json({success: 'User created', id: _id, "user name": userName, token});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

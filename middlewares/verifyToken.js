@@ -3,7 +3,8 @@ import { User } from '../models/Schemas.js';
 
 const verifyToken = async (req, res, next) => {
   try {
-    const { token } = req.cookies;
+    // delete cookie parser; ask Julia how to store token in headers
+    const { token } = req.headers;
     if (!token) throw new Error('No access: unauthorized');
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
     const foundUser = await User.findOne({ _id });

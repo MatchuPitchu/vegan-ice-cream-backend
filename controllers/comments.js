@@ -29,13 +29,13 @@ export const getSingleComment = async (req, res)=> {
 
 export const createComment = async (req, res)=> {
     try {
+        const { id: location_id } = req.params;
         const { 
             user_id, 
-            location_id, 
             flavors_referred, 
             text, 
-            grade_quality, 
-            grade_vegan_offer, 
+            rating_quality, 
+            rating_vegan_offer, 
             date 
         } = req.body;
         const newComment = await Comment.create({
@@ -44,16 +44,16 @@ export const createComment = async (req, res)=> {
             location_id,
             flavors_referred,
             text,
-            grade_quality,
-            grade_vegan_offer,
+            rating_quality,
+            rating_vegan_offer,
             date
         });
         // Update arrays of other schemas that use ref "Comment"; update with _id of newComment in order to inform about creation of new comment
         // findOneAndUpdate() https://mongoosejs.com/docs/tutorials/findoneandupdate.html
         // Update Operators: https://docs.mongodb.com/manual/reference/operator/update/
-        const updateUser = await User.findOneAndUpdate({ _id: newComment.user_id }, {"$push": { "comments": newComment._id }}  );
+        const updateUser = await User.findOneAndUpdate({ _id: user_id }, {"$push": { "comments_list": newComment._id }}  );
         console.log(updateUser);
-        const updateLocation = await Location.findOneAndUpdate({ _id: newComment.location_id }, {"$push": { "comments_list": newComment._id }}  );
+        const updateLocation = await Location.findOneAndUpdate({ _id: location_id }, {"$push": { "comments_list": newComment._id }}  );
         console.log(updateLocation);
         res.status(201).json(newComment);
     } catch (error) {
@@ -61,29 +61,25 @@ export const createComment = async (req, res)=> {
     };
 }
 
-// user can update his comment
+// user can update his comment for the same location -> can not change location, than user has to delete comment
 export const updateComment = async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id: comment_id } = req.params;
       const { 
+        location_id,
         flavors_referred, 
         text, 
-        grade_quality, 
-        grade_vegan_offer, 
+        rating_quality, 
+        rating_vegan_offer, 
         date
       } = req.body;
       // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
       const updatedComment = await Comment.findOneAndUpdate(
-          { _id: id },
-          { location_id, flavors_referred, text, grade_quality, grade_vegan_offer, date },
+          { _id: comment_id },
+          { location_id, flavors_referred, text, rating_quality, rating_vegan_offer, date },
+          // set the new option to true to return the document after update was applied
           { new: true }
-        ).populate('_id', 'location_id', 'flavors_referred', 'text', 'grade_quality', 'grade_vegan_offer', 'date');
-      
-      const updateLocation = await Location.findOneAndReplace(
-          { _id: location_id },
-          {"$push": { "comments_list": updatedComment._id }}
-      );
-      console.log(updateLocation);
+        ).populate('_id', 'location_id', 'flavors_referred', 'text', 'rating_quality', 'rating_vegan_offer', 'date');
       res.json(updatedComment);
     } catch (error) {
       res.status(500).json({ error: error.message });
