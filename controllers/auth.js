@@ -24,7 +24,7 @@ export const register = async (req, res) => {
       { expiresIn: "7d" }
     );
     // in frontend I receive token in json file -> there save token in localStorage
-    res.status(200).json({success: 'User created', id: _id, "user name": userName, token});
+    res.status(200).json({success: 'User created', id: _id, userName: userName, token});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -34,6 +34,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const foundUser = await User.findOne({ email }).select('+password');
+    console.log(foundUser)
     if (!foundUser) throw new Error('This user account does not exist');
     const passwordCheck = await bcrypt.compare(password, foundUser.password);
     if (!passwordCheck) throw new Error('Password is incorrect');
@@ -42,7 +43,7 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-    res.status(200).json({ success: 'User signed in', id: _id, "user name": foundUser.name, token});
+    res.status(200).json({ success: 'User signed in', id: foundUser._id, userName: foundUser.name, token});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
