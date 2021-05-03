@@ -12,19 +12,19 @@ export const register = async (req, res) => {
     // hash password before saving in DB: https://www.npmjs.com/package/bcrypt
     if (password !== repeatPassword) res.status(400).json('Please check whether you have entered the same password twice')
     const hashPassword = await bcrypt.hash(password, 12);
-    const { _id, name: userName } = await User.create({
+    const createdUser = await User.create({
       _id: new mongoose.Types.ObjectId(),
       name,
       email, 
       password: hashPassword 
     });
     const token = jwt.sign(
-      { _id, email }, 
+      { _id: createdUser._id, email: createdUser.email }, 
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
     // in frontend I receive token in json file -> there save token in localStorage
-    res.status(200).json({success: 'User created', id: _id, userName: userName, token});
+    res.status(200).json({success: 'User created', user: createdUser, token});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
