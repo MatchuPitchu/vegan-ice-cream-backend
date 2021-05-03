@@ -32,7 +32,7 @@ export const getAllInfosFromUser = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id)
-      .populate('comments')
+      .populate('comments_list')
       .populate('favorite_locations')
       .populate('favorite_flavors');
     if (!user) return res.status(404).json({ message: `User with id ${id} not found` });
