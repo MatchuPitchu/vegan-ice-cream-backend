@@ -43,7 +43,7 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-    res.status(200).json({ success: 'User signed in', id: foundUser._id, userName: foundUser.name, token});
+    res.status(200).json({ success: 'User signed in', user: foundUser, token});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
