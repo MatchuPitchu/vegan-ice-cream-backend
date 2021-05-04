@@ -7,13 +7,11 @@ export const getAllLocation = async (req, res)=> {
   const page = parseInt(req.query.page);
   const limit = parseInt(req.query.limit);
   const skipIndex = (page - 1) * limit;
-  const results = {};
 
   try {
-    results.results = await Location.find()
+    const locations = await Location.find()
       .limit(limit)
       .skip(skipIndex)
-    const locations = results;
     res.json(locations);
   } catch (error) {
     res.status(500).json({ message: error.message})
