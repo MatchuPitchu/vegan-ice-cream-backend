@@ -36,9 +36,9 @@ export const getAllInfosFromUser = async (req, res) => {
       .populate('favorite_locations')
       .populate('favorite_flavors');
     if (!user) return res.status(404).json({ message: `User with id ${id} not found` });
-    const {comments, favorite_locations, favorite_flavors} = user;
+    const {comments_list, favorite_locations, favorite_flavors} = user;
     const infos = {
-      comments,
+      comments_list,
       favorite_locations,
       favorite_flavors
     }
