@@ -4,12 +4,20 @@ import mongoose from 'mongoose';
 import { Location } from '../models/Schemas.js';
 
 export const getAllLocation = async (req, res)=> {
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+  const skipIndex = (page - 1) * limit;
+  const results = {};
+
   try {
-      const locations = await Location.find();  
-      res.json(locations);
+    results.results = await Location.find()
+      .limit(limit)
+      .skip(skipIndex)
+    const locations = results;
+    res.json(locations);
   } catch (error) {
-      res.status(500).json({ error: error.message});
-  };
+    res.status(500).json({ message: error.message})
+  }
 }
         
 export const getSingleLocation = async (req, res)=> {
