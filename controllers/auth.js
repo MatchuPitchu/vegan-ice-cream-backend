@@ -49,8 +49,7 @@ export const login = async (req, res) => {
   }
 };
 
-// QUESTION: ONLY ACCESS TO UPDATEUSER IF LOGGED IN AS THIS USER - HOW TO CHECK THIS???
-// ANSWER VLLT: with middleware verifytoken!!!
+// Only access to logged in user
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -70,8 +69,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// QUESTION: ONLY ACCESS TO UPDATEUSER IF LOGGED IN AS THIS USER - HOW TO CHECK THIS???
-// ANSWER VLLT: with middleware verifytoken!!!
+// Only access to logged in user
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

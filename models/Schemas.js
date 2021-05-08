@@ -9,9 +9,9 @@ const AutoIncrement = AutoIncrementFactory(mongoose);
 // Do not need "_id: Schema.Types.ObjectId" in schemas
 
 const userSchema = new Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true, select: false },
+  name: { type: String },
+  email: { type: String },
+  password: { type: String, select: false },
   comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   favorite_locations: [{ type: Schema.Types.ObjectId, ref: 'Location'}],
   favorite_flavors: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}]
