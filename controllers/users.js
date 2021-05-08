@@ -47,3 +47,35 @@ export const getAllInfosFromUser = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 };
+
+// Only access to logged in user
+export const removeFavLocation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { remove_location_id } = req.body;
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: id },
+      { $pullAll: { favorite_locations: [remove_location_id] } },
+      { new: true }
+    );
+    res.status(201).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const addFavLocation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { add_location_id } = req.body;
+    const updatedUser = await User.findOneAndUpdate(
+      {_id: id},
+      { $addToSet: { favorite_locations: add_location_id } }
+    );
+    console.log(updatedUser);
+    res.status(201).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

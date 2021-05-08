@@ -129,6 +129,28 @@ version: v1
                         ]
                       }
                     ]
+      
+    /remove-fav-loc:  
+        put:
+          description: Remove one favorite location
+          response: 201
+          body:
+            application/json:
+              type: |
+                {
+                  remove_location_id: "...",
+                }
+
+    /add-fav-loc:  
+        put:
+          description: Add one favorite location
+          response: 201
+          body:
+            application/json:
+              type: |
+                {
+                  add_location_id: "...",
+                }
 
 /comments:
   /:

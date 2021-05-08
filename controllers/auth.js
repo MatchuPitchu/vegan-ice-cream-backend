@@ -56,7 +56,7 @@ export const updateUser = async (req, res) => {
     const { name, email, password, favorite_locations, favorite_flavors } = req.body;
     const foundUser = await User.findOne({ email });
     if (foundUser) throw new Error('Email already taken');
-    const hashPassword = await bcrypt.hash(password, 5);
+    const hashPassword = await bcrypt.hash(password, 12);
     // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     const updatedUser = await User.findOneAndUpdate(
         { _id: id },
