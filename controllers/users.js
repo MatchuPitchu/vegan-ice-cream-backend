@@ -71,7 +71,7 @@ export const addFavLocation = async (req, res) => {
     const { add_location_id } = req.body;
     const { favorite_locations } = await User.findOneAndUpdate(
       {_id: id},
-      { $addToSet: { favorite_locations: add_location_id } }
+      { $addToSet: { favorite_locations: [add_location_id] } }
     ).populate('favorite_locations');
     res.status(201).json(favorite_locations);
   } catch (error) {
