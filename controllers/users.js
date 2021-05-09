@@ -42,7 +42,7 @@ export const getAllInfosFromUser = async (req, res) => {
       favorite_locations,
       favorite_flavors
     }
-    res.json(infos);
+    res.status(200).json(infos);
   } catch(err) {
     res.status(500).json({ error: err.message })
   }
@@ -54,12 +54,12 @@ export const removeFavLocation = async (req, res) => {
     const { id } = req.params;
     const { remove_location_id } = req.body;
 
-    const updatedUser = await User.findOneAndUpdate(
+    const { favorite_locations } = await User.findOneAndUpdate(
       { _id: id },
       { $pullAll: { favorite_locations: [remove_location_id] } },
       { new: true }
-    );
-    res.status(201).json(updatedUser);
+    ).populate('favorite_locations');
+    res.status(201).json(favorite_locations);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -69,12 +69,11 @@ export const addFavLocation = async (req, res) => {
   try {
     const { id } = req.params;
     const { add_location_id } = req.body;
-    const updatedUser = await User.findOneAndUpdate(
+    const { favorite_locations } = await User.findOneAndUpdate(
       {_id: id},
       { $addToSet: { favorite_locations: add_location_id } }
-    );
-    console.log(updatedUser);
-    res.status(201).json(updatedUser);
+    ).populate('favorite_locations');
+    res.status(201).json(favorite_locations);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
