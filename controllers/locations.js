@@ -34,7 +34,10 @@ export const getAllComAndFlavOfLocation = async (req, res)=> {
       const { id } = req.params;
       const singleLocation = await Location.findById(id)
         // OPEN QUESTION: ONLY WANT TO RETURN BOTH LISTS, NOT THE REST
-        .populate('comments_list')
+        .populate({
+          path: 'comments_list',
+          populate: { path: 'user_id', select: 'name'}  
+        })
         .populate('flavors_listed');   
       if(!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>`});
       res.json(singleLocation);
