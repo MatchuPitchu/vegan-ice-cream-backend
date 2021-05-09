@@ -355,6 +355,20 @@ version: v1
             { 
               "success": "Location with id of ... was deleted"
             }
+  /{id}:
+    /all-comments-flavors:
+      get:
+        description: Retrieve all comments and listed flavors of one specific location
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "_id": "608aaa51dde1e03614a1a7af",
+                    "comments_list": [],
+                    "flavors_listed": [],
+                  }
 
 /flavors:
   /:

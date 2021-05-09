@@ -29,6 +29,20 @@ export const getSingleLocation = async (req, res)=> {
   };
 }
 
+export const getAllComAndFlavOfLocation = async (req, res)=> {
+  try {
+      const { id } = req.params;
+      const singleLocation = await Location.findById(id)
+        // OPEN QUESTION: ONLY WANT TO RETURN BOTH LISTS, NOT THE REST
+        .populate('comments_list')
+        .populate('flavors_listed');   
+      if(!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>`});
+      res.json(singleLocation);
+  } catch (error) {
+      res.status(500).json({ error: error.message});
+  };
+}
+
 export const createLocation = async (req, res)=> {
     try {
         const { 
