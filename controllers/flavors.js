@@ -52,7 +52,7 @@ export const createFlavor = async (req, res)=> {
         const updateComment = await Comment.findOneAndUpdate(
           { _id: comment_id },
           {"$push": 
-            { "flavors_referred": newFlavor._id }
+            { "flavors_referred": [newFlavor._id] }
           }  
         );
         console.log(updateComment);
