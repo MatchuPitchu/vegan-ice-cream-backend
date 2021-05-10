@@ -98,8 +98,7 @@ const flavorSchema = new Schema( {
   type_cream_ice: { type: Boolean, required: true },
   ice_color: {
     color_primary: { type: String, validator: [colorValidator, 'Invalid color'], required: true},
-    color_secondary: { type: String, validator: [colorValidator, 'Invalid color']},
-    color_tertiary: { type: String, validator: [colorValidator, 'Invalid color']},
+    color_secondary: { type: String, validator: [colorValidator, 'Invalid color']}
   },
 });
 

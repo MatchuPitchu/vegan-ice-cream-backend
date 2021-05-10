@@ -32,8 +32,7 @@ export const createFlavor = async (req, res)=> {
           type_cream_ice,
           ice_color: {
             color_primary,
-            color_secondary,
-            color_tertiary,
+            color_secondary
           },
         } = req.body;
         const newFlavor = await Flavor.create({
@@ -44,14 +43,18 @@ export const createFlavor = async (req, res)=> {
             type_cream_ice,
             ice_color: {
               color_primary,
-              color_secondary,
-              color_tertiary,
+              color_secondary
             },
         });
         // Update array of flavors_referred with ref "Flavor" in Comment Schema in order to inform about creation of new flavor and link flavors to this certain comment
         // findOneAndUpdate() https://mongoosejs.com/docs/tutorials/findoneandupdate.html
         // Update Operators: https://docs.mongodb.com/manual/reference/operator/update/
-        const updateComment = await Comment.findOneAndUpdate({ _id: comment_id }, {"$push": { "flavors_referred": newFlavor._id }}  );
+        const updateComment = await Comment.findOneAndUpdate(
+          { _id: comment_id },
+          {"$push": 
+            { "flavors_referred": newFlavor._id }
+          }  
+        );
         console.log(updateComment);
         res.status(201).json(newFlavor);
     } catch (error) {
