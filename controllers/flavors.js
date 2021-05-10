@@ -51,9 +51,7 @@ export const createFlavor = async (req, res)=> {
         // Update Operators: https://docs.mongodb.com/manual/reference/operator/update/
         const updateComment = await Comment.findOneAndUpdate(
           { _id: comment_id },
-          {"$push": 
-            { "flavors_referred": [newFlavor._id] }
-          }  
+          { $addToSet: { flavors_referred: [newFlavor._id] } }
         );
         console.log(updateComment);
         res.status(201).json(newFlavor);
