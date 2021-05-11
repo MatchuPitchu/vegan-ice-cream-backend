@@ -71,7 +71,7 @@ const locationSchema = new Schema( {
   address: {
     street: { type: String },
     number: { type: Number },
-    zipcode: { type: Number },
+    zipcode: { type: String },
     city: { type: String, required: true },
     country: { type: String },
     geo: {
