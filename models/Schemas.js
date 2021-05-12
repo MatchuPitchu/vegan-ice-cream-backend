@@ -93,6 +93,7 @@ const colorValidator = (v) => (/^#([0-9a-f]{3}){1,2}$/i).test(v);
 
 const flavorSchema = new Schema( {
   comment_id: [{ type: Schema.Types.ObjectId, ref: 'Comment', required: true }],
+  user_id: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   name: { type: String, required: true },
   type_fruit_ice: { type: Boolean, required: true },
   type_cream_ice: { type: Boolean, required: true },
