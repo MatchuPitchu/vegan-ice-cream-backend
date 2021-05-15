@@ -4,7 +4,7 @@ import { getAllLocation, getAllLocationsInViewport, getSingleLocation, getAllCom
 const locationRouter = express.Router();
 
 locationRouter.get('/', getAllLocation);
-locationRouter.get('/viewport', getAllLocationsInViewport);
+locationRouter.post('/viewport', getAllLocationsInViewport);
 locationRouter.get('/:id', getSingleLocation);
 locationRouter.get('/:id/all-comments-flavors', getAllComAndFlavOfLocation);
 locationRouter.post('/', createLocation);
