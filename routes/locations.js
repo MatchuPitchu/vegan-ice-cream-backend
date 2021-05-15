@@ -1,9 +1,10 @@
 import express from 'express';
-import { getAllLocation, getSingleLocation, getAllComAndFlavOfLocation, createLocation, updateLocation, deleteLocation } from '../controllers/locations.js';
+import { getAllLocation, getAllLocationsInViewport, getSingleLocation, getAllComAndFlavOfLocation, createLocation, updateLocation, deleteLocation } from '../controllers/locations.js';
 
 const locationRouter = express.Router();
 
 locationRouter.get('/', getAllLocation);
+locationRouter.post('/viewport', getAllLocationsInViewport);
 locationRouter.get('/:id', getSingleLocation);
 locationRouter.get('/:id/all-comments-flavors', getAllComAndFlavOfLocation);
 locationRouter.post('/', createLocation);

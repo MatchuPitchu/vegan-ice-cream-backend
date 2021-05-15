@@ -17,7 +17,34 @@ export const getAllLocation = async (req, res)=> {
     res.status(500).json({ message: error.message})
   }
 }
-        
+
+export const getAllLocationsInViewport = async (req, res)=> {
+  const limit = parseInt(req.query.limit);
+
+  try {
+    const { 
+      southLat,
+      westLng,
+      northLat,
+      eastLng
+    } = req.body;
+    const locations = await Location.find(
+      { address: {
+        geo: {
+          lat: { $gt: southLat },
+          lng: { $gt: westLng },
+          lat: { $lt: northLat },
+          lng: { $lt: eastLng },
+          }
+        }
+      }
+    ).limit(limit)
+    res.json(locations);
+  } catch (error) {
+    res.status(500).json({ message: error.message})
+  }
+}
+
 export const getSingleLocation = async (req, res)=> {
   try {
       const { id } = req.params;
