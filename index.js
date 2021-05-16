@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 // to be able to receive and send Cookie in network, need origin (http of frontend) and 
 // credentials set to true; siehe credentials settings in const options in signup.js in frontend
-app.use(cors({ origin: process.env.ORIGIN || 'http://localhost:8100', credentials: true }));
+app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 app.use(express.json());
 
 /* middlewares */
