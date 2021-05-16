@@ -1,5 +1,12 @@
 import express from 'express';
-import { getAllUsers, getSingleUser, getAllInfosFromUser, removeFavLocation, addFavLocation } from '../controllers/users.js';
+import { 
+  getAllUsers, 
+  getSingleUser, 
+  getAllInfosFromUser, 
+  removeFavLocation, 
+  addFavLocation, 
+  addNumLocationLastVisit 
+} from '../controllers/users.js';
 import verifyToken from '../middlewares/verifyToken.js';
 
 const userRouter = express.Router();
@@ -12,5 +19,6 @@ userRouter.get('/:id', getSingleUser);
 userRouter.get('/:id/infos', verifyToken, getAllInfosFromUser);
 userRouter.put('/:id/remove-fav-loc', verifyToken, removeFavLocation);
 userRouter.put('/:id/add-fav-loc', verifyToken, addFavLocation);
+userRouter.put('/:id/num-loc-last-visit', verifyToken, addNumLocationLastVisit);
 
 export default userRouter;

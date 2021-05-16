@@ -14,7 +14,8 @@ const userSchema = new Schema({
   password: { type: String, select: false },
   comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   favorite_locations: [{ type: Schema.Types.ObjectId, ref: 'Location'}],
-  favorite_flavors: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}]
+  favorite_flavors: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
+  num_loc_last_visit: { type: Number, default: 0 }
 });
 
 const commentSchema = new Schema( {

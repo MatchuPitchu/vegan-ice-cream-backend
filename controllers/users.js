@@ -81,3 +81,17 @@ export const addFavLocation = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const addNumLocationLastVisit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { current_num_loc } = req.body;
+    const { num_loc_last_visit } = await User.findOneAndUpdate(
+      {_id: id},
+      { $set: { num_loc_last_visit: current_num_loc } }
+    );
+    res.status(201).json(num_loc_last_visit);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
