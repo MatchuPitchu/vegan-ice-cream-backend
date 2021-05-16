@@ -90,7 +90,7 @@ export const addNumLocationLastVisit = async (req, res) => {
       {_id: id},
       { $set: { num_loc_last_visit: current_num_loc } }
     );
-    res.status(201).json(num_loc_last_visit);
+    res.status(201).json('Update erfolgreich');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
