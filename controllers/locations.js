@@ -53,7 +53,7 @@ export const getAllComAndFlavOfLocation = async (req, res)=> {
   try {
       const { id } = req.params;
       const singleLocation = await Location.findById(id)
-        // OPEN QUESTION: ONLY WANT TO RETURN BOTH LISTS, NOT THE REST
+        // Only return these both lists
         .populate({
           path: 'comments_list',
           populate: { path: 'user_id', select: 'name'}  
