@@ -56,7 +56,8 @@ export const getAllComAndFlavOfLocation = async (req, res)=> {
         // Only return these both lists
         .populate({
           path: 'comments_list',
-          populate: { path: 'user_id', select: 'name'}  
+          populate: { path: 'user_id', select: 'name'}  ,
+          populate: { path: 'flavors_referred', select: 'name'}
         })
         .populate('flavors_listed');   
       if(!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>`});
