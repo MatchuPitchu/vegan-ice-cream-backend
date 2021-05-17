@@ -32,9 +32,13 @@ export const getAllLocationsInViewport = async (req, res)=> {
       eastLng
     } = req.body;
     const locations = await Location.find({ 
-      "address.geo.lat": { $gt: southLat, $lt: northLat },
-      "address.geo.lng": { $gt: westLng, $lt: eastLng }
-    }).limit(limit)
+        "address.geo.lat": { $gt: southLat, $lt: northLat },
+        "address.geo.lng": { $gt: westLng, $lt: eastLng }
+      })
+      .populate({
+        path: 'flavors_listed', select: 'name ice_color'
+      })
+      .limit(limit)
     res.json(locations);
   } catch (error) {
     res.status(500).json({ message: error.message})
