@@ -12,6 +12,9 @@ export const getAllLocation = async (req, res)=> {
     const locations = await Location.find()
       .limit(limit)
       .skip(skipIndex)
+      .populate({
+        path: 'flavors_listed', select: 'name ice_color'
+      })
     res.json(locations);
   } catch (error) {
     res.status(500).json({ message: error.message})
