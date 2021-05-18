@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 // import all schemas that have a reference to 'Flavor' and 
 // which has to be 'informed' about creating or updating of new flavor
-import { Flavor, Comment, User } from '../models/Schemas.js';
+import { Flavor, Comment, Location, User } from '../models/Schemas.js';
 
 export const getAllFlavors = async (req, res)=> {
     try {
@@ -26,7 +26,8 @@ export const getSingleFlavor = async (req, res)=> {
 export const createFlavor = async (req, res)=> {
     try {
         const { id: comment_id } = req.params;
-        const { 
+        const {
+          location_id,
           user_id,
           name,
           type_fruit_ice,
@@ -61,6 +62,11 @@ export const createFlavor = async (req, res)=> {
           { $addToSet: { favorite_flavors: [newFlavor._id] } }
         );
         console.log(updateUser);
+        const updateLocation = await User.findOneAndUpdate(
+          { _id: location_id },
+          { $addToSet: { flavors_listed: [newFlavor._id] } }
+        );
+        console.log(updateLocation);
         res.status(201).json(newFlavor);
     } catch (error) {
         res.status(500).json({ error: error.message});
