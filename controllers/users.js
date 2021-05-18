@@ -34,7 +34,10 @@ export const getAllInfosFromUser = async (req, res) => {
     const user = await User.findById(id)
       .populate({
         path: 'comments_list',
-        populate: { path: 'location_id', select: 'name' }
+        populate: [
+          { path: 'location_id', select: 'name' },
+          { path: 'flavors_referred', select: 'name' }
+        ]
       })
       .populate('favorite_locations')
       .populate('favorite_flavors');
