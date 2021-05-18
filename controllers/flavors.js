@@ -62,7 +62,7 @@ export const createFlavor = async (req, res)=> {
           { $addToSet: { favorite_flavors: [newFlavor._id] } }
         );
         console.log(updateUser);
-        const updateLocation = await User.findOneAndUpdate(
+        const updateLocation = await Location.findOneAndUpdate(
           { _id: location_id },
           { $addToSet: { flavors_listed: [newFlavor._id] } }
         );
