@@ -17,7 +17,7 @@ import locationRouter from './routes/locations.js';
 import authRouter from './routes/auth.js';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
-export const publicDir = path.join(__dirname, 'public');
+const publicDir = path.join(__dirname, 'public');
 
 const app = express();
 const port = process.env.PORT || 5000;

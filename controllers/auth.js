@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import { User } from '../models/Schemas.js';
 
 import { sendConfirmationEmail } from '../mailer.js';
-import { publicDir } from '../index.js';
 
 export const register = async (req, res) => {
   try {
@@ -41,12 +40,12 @@ export const activateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const confirmed = true;
-    const activatedUser = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { _id: id },
       { confirmed },
       { new: true }
     );
-    res.sendFile('activate-user.html', { root: publicDir })
+    res.redirect('https://veganeis-app.netlify.app');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
