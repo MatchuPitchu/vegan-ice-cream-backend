@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, updateUser, deleteUser, approvedSession } from '../controllers/auth.js';
+import { register, login, activateUser, updateUser, deleteUser, approvedSession } from '../controllers/auth.js';
 import { registerBody, loginBody } from '../joi/schemas.js';
 import validateJoi from '../middlewares/validateJoi.js';
 import verifyToken from '../middlewares/verifyToken.js';
@@ -11,7 +11,7 @@ authRouter.post('/register', validateJoi(registerBody), register);
 
 authRouter.post('/login', validateJoi(loginBody), login);
 
-// authRouter.put('/activate/user/:id', activateUser);
+authRouter.put('/activate/user/:id', activateUser);
 
 // Only access to these pages if verifyToken passed
 authRouter.put('/user/:id', verifyToken, updateUser);

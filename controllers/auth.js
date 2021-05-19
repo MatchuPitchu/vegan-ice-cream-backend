@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import { User } from '../models/Schemas.js';
 
-// import { sendConfirmationEmail } from '../mailer.js'
+import { sendConfirmationEmail } from '../mailer.js';
+import { publicDir } from '../index.js';
 
 export const register = async (req, res) => {
   try {
@@ -21,35 +22,35 @@ export const register = async (req, res) => {
       password: hashPassword
     });
 
-    // await sendConfirmationEmail({toUser: createdUser, user_id: createdUser._id})
+    await sendConfirmationEmail({toUser: createdUser, user_id: createdUser._id})
 
     // Token only when activated user and than first login
-    const token = jwt.sign(
-      { _id: createdUser._id, email: createdUser.email }, 
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    // const token = jwt.sign(
+    //   { _id: createdUser._id, email: createdUser.email }, 
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: "7d" }
+    // );
     // in frontend I receive token in json file -> there save token in localStorage
-    res.status(200).json({success: 'User created', user: createdUser, token});
+    res.status(200).json({success: 'User created', user: createdUser });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// export const activateUser = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { name, email, password } = req.body;
-//     const activatedUser = await User.findOneAndUpdate(
-//       { _id: id },
-//       { confirmed: true},
-//       { new: true }
-//     );
-//     res.status(200).json(activatedUser);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+export const activateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const confirmed = true;
+    const activatedUser = await User.findOneAndUpdate(
+      { _id: id },
+      { confirmed },
+      { new: true }
+    );
+    res.sendFile('activate-user.html', { root: publicDir })
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const login = async (req, res) => {
   try {
