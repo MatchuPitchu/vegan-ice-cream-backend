@@ -45,7 +45,7 @@ export const activateUser = async (req, res) => {
       { confirmed },
       { new: true }
     );
-    res.redirect('https://veganeis-app.netlify.app');
+    res.status(200).json({message: 'Aktivierung des Mail-Accounts erfolgreich'});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
