@@ -11,6 +11,8 @@ authRouter.post('/register', validateJoi(registerBody), register);
 
 authRouter.post('/login', validateJoi(loginBody), login);
 
+// authRouter.put('/activate/user/:id', activateUser);
+
 // Only access to these pages if verifyToken passed
 authRouter.put('/user/:id', verifyToken, updateUser);
 authRouter.delete('/user/:id', verifyToken, deleteUser);
