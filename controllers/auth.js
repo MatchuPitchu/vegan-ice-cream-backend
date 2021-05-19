@@ -23,13 +23,6 @@ export const register = async (req, res) => {
 
     await sendConfirmationEmail({toUser: createdUser, user_id: createdUser._id})
 
-    // Token only when activated user and than first login
-    // const token = jwt.sign(
-    //   { _id: createdUser._id, email: createdUser.email }, 
-    //   process.env.JWT_SECRET,
-    //   { expiresIn: "7d" }
-    // );
-    // in frontend I receive token in json file -> there save token in localStorage
     res.status(200).json({success: 'User created', user: createdUser });
   } catch (error) {
     res.status(500).json({ error: error.message });
