@@ -17,6 +17,14 @@ const userSchema = new Schema({
   favorite_locations: [{ type: Schema.Types.ObjectId, ref: 'Location'}],
   favorite_flavors: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
   num_loc_last_visit: { type: Number, default: 0 }
+  // needs_reset: boolean
+  // resetToken: random number with Math.random like asfdgaSDF1516
+  // Link send to Email: https://myapp.com/rest/asfdgaSDF1516
+  // Link in Mail goes to Frontend Page with form new password + repeat new password
+  // Do a PATCH request (instead of put) to update only one field
+  // I have 1 endpoint in backend -> that takes new pw and code of email
+  // There in backend I have to find User where user needsReset is true and resetToken is the same
+  // Read about PATCH and PUT differences
 });
 
 const commentSchema = new Schema( {
