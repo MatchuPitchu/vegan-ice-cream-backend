@@ -5,7 +5,14 @@ export const registerBody = Joi.object().keys({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().pattern(new RegExp('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,32}$')),
-  repeatPassword: Joi.string().pattern(new RegExp('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,32}$'))
+  repeatPassword: Joi.string().pattern(new RegExp('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,32}$')),
+  home_city: { 
+    city: Joi.string(),
+    geo: { 
+        lat: Joi.number(), 
+        lng: Joi.number()
+    }
+  }
 })
 
 export const loginBody = Joi.object().keys({
