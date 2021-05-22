@@ -56,17 +56,14 @@ export const createFlavor = async (req, res)=> {
           { _id: comment_id },
           { $addToSet: { flavors_referred: [newFlavor._id] } }
         );
-        console.log(updateComment);
         const updateUser = await User.findOneAndUpdate(
           { _id: user_id },
           { $addToSet: { favorite_flavors: [newFlavor._id] } }
         );
-        console.log(updateUser);
         const updateLocation = await Location.findOneAndUpdate(
           { _id: location_id },
           { $addToSet: { flavors_listed: [newFlavor._id] } }
         );
-        console.log(updateLocation);
         res.status(201).json(newFlavor);
     } catch (error) {
         res.status(500).json({ error: error.message});

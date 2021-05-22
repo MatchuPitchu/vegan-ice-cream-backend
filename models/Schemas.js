@@ -16,8 +16,9 @@ const userSchema = new Schema({
   comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   favorite_locations: [{ type: Schema.Types.ObjectId, ref: 'Location'}],
   favorite_flavors: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
-  num_loc_last_visit: { type: Number, default: 0 }
-  // needs_reset: boolean
+  num_loc_last_visit: { type: Number, default: 0 },
+  needs_reset: { type: Boolean, default: false },
+  resetToken: { type: String }
   // resetToken: random number with Math.random like asfdgaSDF1516
   // Link send to Email: https://myapp.com/rest/asfdgaSDF1516
   // Link in Mail goes to Frontend Page with form new password + repeat new password
