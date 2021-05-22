@@ -1,7 +1,9 @@
 import express from 'express';
 import { 
   getAllUsers, 
-  getSingleUser, 
+  getSingleUser,
+  updateUser,
+  deleteUser,
   getAllInfosFromUser, 
   removeFavLocation, 
   addFavLocation, 
@@ -16,6 +18,8 @@ userRouter.get('/', getAllUsers);
 userRouter.get('/:id', getSingleUser);
 
 // Only access to these pages if verifyToken passed
+userRouter.put('/:id', verifyToken, updateUser);
+userRouter.delete('/:id', verifyToken, deleteUser);
 userRouter.get('/:id/infos', verifyToken, getAllInfosFromUser);
 userRouter.put('/:id/remove-fav-loc', verifyToken, removeFavLocation);
 userRouter.put('/:id/add-fav-loc', verifyToken, addFavLocation);

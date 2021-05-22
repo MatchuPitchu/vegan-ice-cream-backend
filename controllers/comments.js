@@ -52,9 +52,7 @@ export const createComment = async (req, res)=> {
         // findOneAndUpdate() https://mongoosejs.com/docs/tutorials/findoneandupdate.html
         // Update Operators: https://docs.mongodb.com/manual/reference/operator/update/
         const updateUser = await User.findOneAndUpdate({ _id: user_id }, {"$push": { "comments_list": newComment._id }}  );
-        console.log(updateUser);
         const updateLocation = await Location.findOneAndUpdate({ _id: location_id }, {"$push": { "comments_list": newComment._id }}  );
-        console.log(updateLocation);
         res.status(201).json(newComment);
     } catch (error) {
         res.status(500).json({ error: error.message});

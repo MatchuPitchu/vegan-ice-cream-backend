@@ -1,7 +1,7 @@
 #%RAML 1.0
 ---
-title: vegan-ice-cream
-version: v1
+title: Eis mit Stil - Vegan Ice Cream App
+version: v1.1
 
 /users:
   /:
@@ -66,6 +66,47 @@ version: v1
                     ]
                   }
                 }
+
+    put:
+      description: Update one user
+      response: 200
+      body:
+        application/json:
+          type: |
+            {
+              {
+                "_id": "7a9427648b0beebeb69579cc",
+                "name": "Max Mustermann",
+                "email": "max@posteo.de",
+                "comments": [
+                    {
+                      "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
+                    },
+                    {
+                      "text": "At vero eos et accusam et justo duo doloes."
+                    }
+                ],
+                "favorite_locations": [
+                    "6089c00433fc7d0a68c927ae",
+                    "60867e1920fc8b983cbc9312"
+                ],
+                "favorite_flavors": [
+                    "6089bf2833fc7d0a68c927ad",
+                    "608a8ebab2523447006b3b68"
+                ]
+              }
+            }
+        
+    delete:
+      description: Delete one user
+      response: 200
+      body:
+        application/json:
+          type: |
+            { 
+              "success": "User with id of ... was deleted"
+            }
+
     /infos:
       get:
           description: Retrieve all infos (comments, favorite_locations, favorite_flavors) for one specific user
@@ -151,6 +192,17 @@ version: v1
                 {
                   add_location_id: "...",
                 }
+
+    /num-loc-last-visit:  
+      put:
+        description: Add number locations of last visit of user
+        response: 201
+        body:
+          application/json:
+            type: |
+              {
+                current_num_loc: "...",
+              }
 
 /comments:
   /:
@@ -491,44 +543,3 @@ version: v1
               email: "...",
               password: "..." 
             }
-
-  /user:
-    /{id}:
-      put:
-        description: Update one user
-        response: 200
-        body:
-          application/json:
-            type: |
-              {
-                {
-                  "_id": "7a9427648b0beebeb69579cc",
-                  "name": "Max Mustermann",
-                  "email": "max@posteo.de",
-                  "comments": [
-                      {
-                        "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
-                      },
-                      {
-                        "text": "At vero eos et accusam et justo duo doloes."
-                      }
-                  ],
-                  "favorite_locations": [
-                      "6089c00433fc7d0a68c927ae",
-                      "60867e1920fc8b983cbc9312"
-                  ],
-                  "favorite_flavors": [
-                      "6089bf2833fc7d0a68c927ad",
-                      "608a8ebab2523447006b3b68"
-                  ]
-                }
-              }
-      delete:
-        description: Delete one user
-        response: 200
-        body:
-          application/json:
-            type: |
-              { 
-                "success": "User with id of ... was deleted"
-              }

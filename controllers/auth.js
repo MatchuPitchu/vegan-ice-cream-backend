@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import { User } from '../models/Schemas.js';
 
-import { sendConfirmationEmail } from '../mailer.js';
+import { sendConfirmationEmail, sendResetPasswordEmail } from '../Utils/mailer.js';
 
 export const register = async (req, res) => {
   try {
@@ -48,7 +48,6 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const foundUser = await User.findOne({ email }).select('+password');
-    console.log(foundUser)
     if (!foundUser) throw new Error('This user account does not exist');
     const passwordCheck = await bcrypt.compare(password, foundUser.password);
     if (!passwordCheck) throw new Error('Password is incorrect');
@@ -63,38 +62,27 @@ export const login = async (req, res) => {
   }
 };
 
-// Only access to logged in user
-export const updateUser = async (req, res) => {
+export const resetPassword = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, email, password, favorite_locations, favorite_flavors } = req.body;
-    const foundUser = await User.findOne({ email });
-    if (foundUser) throw new Error('Email already taken');
-    const hashPassword = await bcrypt.hash(password, 12);
-    // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
-    const updatedUser = await User.findOneAndUpdate(
-        { _id: id },
-        { name, email, password: hashPassword, favorite_locations, favorite_flavors },
-        { new: true }
-      ).populate('_id', 'name', 'email', 'favorite_locations', 'favorite_flavors');
-    res.status(200).json(updatedUser);
+    // create random reset token
+    const rand = () => Math.random().toString(36).substr(2); // remove `0.`
+    const token = () => rand() + rand(); // to make it longer
+    const resetToken = token();
+    
+    const { email } = req.body;
+    const foundUser = await User.findOneAndUpdate(
+      { email },
+      { $set: { needs_reset: true, resetToken } }
+    );
+
+    await sendResetPasswordEmail({toUser: foundUser, resetToken })
+
+    res.status(200).json({message: 'Reset-Mail erfolgreich verschickt'});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Only access to logged in user
-export const deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id);
-    if (!user) return res.status(404).json({ message: `User with id ${id} not found` });
-    await User.deleteOne({ _id: id });
-    res.json({ success: `User with id of ${id} was deleted` });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
 export const approvedSession = async (req, res) => {
   try {
