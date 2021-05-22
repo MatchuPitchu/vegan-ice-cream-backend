@@ -89,11 +89,12 @@ export const setNewPassword = async (req, res) => {
     // hash password before saving in DB: https://www.npmjs.com/package/bcrypt
     if (password !== repeatPassword) res.status(400).json('Please check whether you have entered the same password twice')
     const hashPassword = await bcrypt.hash(password, 12);
-    await User.findOneAndUpdate(
-      { resetToken, email },
-      { password: hashPassword },
+    const updatedUser = await User.findOneAndUpdate(
+      { resetToken, needs_reset: true, email },
+      { password: hashPassword, needs_reset: false, resetToken: '' },
+      { new: true }
     );
-    res.status(200).json({message: 'Passwort erfolgreich erneuert'});
+    if(updatedUser) res.status(200).json({message: 'Passwort erfolgreich erneuert'});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
