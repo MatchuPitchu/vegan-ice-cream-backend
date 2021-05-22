@@ -18,6 +18,7 @@ const userSchema = new Schema({
     geo: {
       lat: { type: Number, required: true },
       lng: { type: Number, required: true }
+    }
   },
   comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   favorite_locations: [{ type: Schema.Types.ObjectId, ref: 'Location'}],
