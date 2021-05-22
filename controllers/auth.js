@@ -8,7 +8,19 @@ import { sendConfirmationEmail, sendResetPasswordEmail } from '../Utils/mailer.j
 export const register = async (req, res) => {
   try {
     //Do password validation in frontend and don't send to api
-    const { name, email, password, repeatPassword, home_city } = req.body;
+    const { 
+      name, 
+      email, 
+      password, 
+      repeatPassword, 
+      home_city: {
+        city,
+        geo: {
+          lat,
+          lng
+        }
+      }
+    } = req.body;
     const foundUser = await User.findOne({ email });
     if (foundUser) throw new Error('Email already taken');
     // hash password before saving in DB: https://www.npmjs.com/package/bcrypt
@@ -19,7 +31,13 @@ export const register = async (req, res) => {
       name,
       email, 
       password: hashPassword,
-      home_city
+      home_city: {
+        city,
+        geo: {
+          lat,
+          lng
+        }
+      }
     });
 
     await sendConfirmationEmail({toUser: createdUser, user_id: createdUser._id})

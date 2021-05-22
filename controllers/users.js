@@ -58,14 +58,40 @@ export const getAllInfosFromUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, password, home_city, favorite_locations, favorite_flavors } = req.body;
+    const { 
+      name, 
+      email, 
+      password, 
+      home_city: {
+        city,
+        geo: {
+          lat,
+          lng
+        }
+      },
+      favorite_locations, 
+      favorite_flavors 
+    } = req.body;
     const foundUser = await User.findOne({ email });
     if (foundUser) throw new Error('Email already taken');
     const hashPassword = await bcrypt.hash(password, 12);
     // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     const updatedUser = await User.findOneAndUpdate(
         { _id: id },
-        { name, email, password: hashPassword, home_city, favorite_locations, favorite_flavors },
+        { 
+          name, 
+          email, 
+          password: hashPassword, 
+          home_city: {
+            city,
+            geo: {
+              lat,
+              lng
+            }
+          }, 
+          favorite_locations, 
+          favorite_flavors 
+        },
         { new: true }
       ).populate('_id', 'name', 'email', 'favorite_locations', 'favorite_flavors');
     res.status(200).json(updatedUser);
