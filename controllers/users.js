@@ -55,6 +55,40 @@ export const getAllInfosFromUser = async (req, res) => {
 };
 
 // Only access to logged in user
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password, favorite_locations, favorite_flavors } = req.body;
+    const foundUser = await User.findOne({ email });
+    if (foundUser) throw new Error('Email already taken');
+    const hashPassword = await bcrypt.hash(password, 12);
+    // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: id },
+        { name, email, password: hashPassword, favorite_locations, favorite_flavors },
+        { new: true }
+      ).populate('_id', 'name', 'email', 'favorite_locations', 'favorite_flavors');
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Only access to logged in user
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: `User with id ${id} not found` });
+    await User.deleteOne({ _id: id });
+    res.json({ success: `User with id of ${id} was deleted` });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+// Only access to logged in user
 export const removeFavLocation = async (req, res) => {
   try {
     const { id } = req.params;
