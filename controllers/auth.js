@@ -62,7 +62,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const resetPassword = async (req, res) => {
+export const askResetPassword = async (req, res) => {
   try {
     // create random reset token
     const rand = () => Math.random().toString(36).substr(2); // remove `0.`
@@ -83,6 +83,21 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+export const setNewPassword = async (req, res) => {
+  try {
+    const { resetToken, email, password, repeatPassword } = req.body;
+    // hash password before saving in DB: https://www.npmjs.com/package/bcrypt
+    if (password !== repeatPassword) res.status(400).json('Please check whether you have entered the same password twice')
+    const hashPassword = await bcrypt.hash(password, 12);
+    await User.findOneAndUpdate(
+      { resetToken, email },
+      { password: hashPassword },
+    );
+    res.status(200).json({message: 'Passwort erfolgreich erneuert'});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const approvedSession = async (req, res) => {
   try {
