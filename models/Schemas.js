@@ -35,6 +35,10 @@ const commentSchema = new Schema( {
   flavors_referred: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
   text: { type: String, required: true },
   rating_quality: { type: Number, min: 0, max: 10, required: true},
+  bio: { type: Boolean },
+  vegan: { type: Boolean },
+  lactose_free: { type: Boolean },
+  not_specified: { type: Boolean },
   rating_vegan_offer: { type: Number, min: 0, max: 10, required: true},
   date: { type: Date, default: Date.now }
 });
