@@ -37,6 +37,8 @@ export const createFlavor = async (req, res)=> {
             secondary
           },
         } = req.body;
+        const foundFlavor = await Flavor.findOne({ name, type_fruit, type_cream });
+        if (foundFlavor) throw new Error('Ice cream flavor exists already');
         const newFlavor = await Flavor.create({
             _id: new mongoose.Types.ObjectId(),
             name,
