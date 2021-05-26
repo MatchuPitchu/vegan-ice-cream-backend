@@ -25,20 +25,35 @@ export const getSingleFlavor = async (req, res)=> {
 
 export const createFlavor = async (req, res)=> {
     try {
-        const { id: comment_id } = req.params;
-        const {
-          location_id,
-          user_id,
-          name,
-          type_fruit,
-          type_cream,
-          color: {
-            primary,
-            secondary
-          },
-        } = req.body;
-        const foundFlavor = await Flavor.findOne({ name, type_fruit, type_cream });
-        if (foundFlavor) throw new Error('Ice cream flavor exists already');
+      const { id: comment_id } = req.params;
+      const {
+        location_id,
+        user_id,
+        name,
+        type_fruit,
+        type_cream,
+        color: {
+          primary,
+          secondary
+        },
+      } = req.body;
+      const foundFlavor = await Flavor.findOne({ name, type_fruit, type_cream });
+      if (foundFlavor) {
+        // Use $addToSet: Add only to set if flavor does not yet exist
+        const updateComment = await Comment.findOneAndUpdate(
+          { _id: comment_id },
+          { $addToSet: { flavors_referred: [foundFlavor._id] } }
+        );
+        const updateUser = await User.findOneAndUpdate(
+          { _id: user_id },
+          { $addToSet: { favorite_flavors: [foundFlavor._id] } }
+        );
+        const updateLocation = await Location.findOneAndUpdate(
+          { _id: location_id },
+          { $addToSet: { flavors_listed: [foundFlavor._id] } }
+        );
+        res.status(201).json({ foundFlavor, message: 'Update with flavor successfully. Ice cream flavor exists already'} );
+      } else {
         const newFlavor = await Flavor.create({
             _id: new mongoose.Types.ObjectId(),
             name,
@@ -65,6 +80,7 @@ export const createFlavor = async (req, res)=> {
           { $addToSet: { flavors_listed: [newFlavor._id] } }
         );
         res.status(201).json(newFlavor);
+      }
     } catch (error) {
         res.status(500).json({ error: error.message});
     };
