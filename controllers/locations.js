@@ -13,7 +13,7 @@ export const getAllLocation = async (req, res)=> {
       .limit(limit)
       .skip(skipIndex)
       .populate({
-        path: 'flavors_listed', select: 'name ice_color'
+        path: 'flavors_listed', select: 'name color'
       })
     res.json(locations);
   } catch (error) {
@@ -36,7 +36,7 @@ export const getAllLocationsInViewport = async (req, res)=> {
         "address.geo.lng": { $gt: westLng, $lt: eastLng }
       })
       .populate({
-        path: 'flavors_listed', select: 'name ice_color'
+        path: 'flavors_listed', select: 'name color'
       })
       .limit(limit)
     res.json(locations);
