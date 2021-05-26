@@ -26,13 +26,7 @@ const userSchema = new Schema({
   num_loc_last_visit: { type: Number, default: 0 },
   needs_reset: { type: Boolean, default: false },
   resetToken: { type: String }
-  // resetToken: random number with Math.random like asfdgaSDF1516
-  // Link send to Email: https://myapp.com/rest/asfdgaSDF1516
-  // Link in Mail goes to Frontend Page with form new password + repeat new password
   // Do a PATCH request (instead of put) to update only one field
-  // I have 1 endpoint in backend -> that takes new pw and code of email
-  // There in backend I have to find User where user needsReset is true and resetToken is the same
-  // Read about PATCH and PUT differences
 });
 
 const commentSchema = new Schema( {
@@ -110,15 +104,15 @@ locationSchema.plugin(AutoIncrement, {inc_field: 'location_num'});
 const colorValidator = (v) => (/^#([0-9a-f]{3}){1,2}$/i).test(v);
 
 const flavorSchema = new Schema( {
-  comment_id: [{ type: Schema.Types.ObjectId, ref: 'Comment', required: true }],
-  user_id: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   name: { type: String, required: true },
-  type_fruit_ice: { type: Boolean, required: true },
-  type_cream_ice: { type: Boolean, required: true },
-  ice_color: {
-    color_primary: { type: String, validator: [colorValidator, 'Invalid color'], required: true},
-    color_secondary: { type: String, validator: [colorValidator, 'Invalid color']}
+  type_fruit: { type: Boolean, required: true },
+  type_cream: { type: Boolean, required: true },
+  color: {
+    primary: { type: String, validator: [colorValidator, 'Invalid color'], required: true},
+    secondary: { type: String, validator: [colorValidator, 'Invalid color']}
   },
+  comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment', required: true }],
+  users_list: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 export const User = model('User', userSchema);
