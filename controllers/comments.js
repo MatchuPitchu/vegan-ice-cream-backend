@@ -34,7 +34,11 @@ export const createComment = async (req, res)=> {
             user_id, 
             flavors_referred, 
             text, 
-            rating_quality, 
+            rating_quality,
+            bio,
+            vegan,
+            lactose_free,
+            not_specified,
             rating_vegan_offer, 
             date 
         } = req.body;
@@ -45,6 +49,10 @@ export const createComment = async (req, res)=> {
             flavors_referred,
             text,
             rating_quality,
+            bio,
+            vegan,
+            lactose_free,
+            not_specified,
             rating_vegan_offer,
             date
         });
@@ -67,14 +75,29 @@ export const updateComment = async (req, res) => {
         location_id,
         flavors_referred, 
         text, 
-        rating_quality, 
+        rating_quality,
+        bio,
+        vegan,
+        lactose_free,
+        not_specified,
         rating_vegan_offer, 
         date
       } = req.body;
       // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
       const updatedComment = await Comment.findOneAndUpdate(
           { _id: comment_id },
-          { location_id, flavors_referred, text, rating_quality, rating_vegan_offer, date },
+          { 
+            location_id, 
+            flavors_referred, 
+            text, 
+            rating_quality,
+            bio,
+            vegan,
+            lactose_free,
+            not_specified,
+            rating_vegan_offer, 
+            date 
+          },
           // set the new option to true to return the document after update was applied
           { new: true }
         ).populate('_id', 'location_id', 'flavors_referred', 'text', 'rating_quality', 'rating_vegan_offer', 'date');
