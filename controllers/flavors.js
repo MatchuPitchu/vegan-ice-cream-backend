@@ -30,23 +30,21 @@ export const createFlavor = async (req, res)=> {
           location_id,
           user_id,
           name,
-          type_fruit_ice,
-          type_cream_ice,
-          ice_color: {
-            color_primary,
-            color_secondary
+          type_fruit,
+          type_cream,
+          color: {
+            primary,
+            secondary
           },
         } = req.body;
         const newFlavor = await Flavor.create({
             _id: new mongoose.Types.ObjectId(),
-            user_id,
-            comment_id,
             name,
-            type_fruit_ice,
-            type_cream_ice,
-            ice_color: {
-              color_primary,
-              color_secondary
+            type_fruit,
+            type_cream,
+            color: {
+              primary,
+              secondary
             },
         });
         // Update array of flavors_referred with ref "Flavor" in Comment Schema in order to inform about creation of new flavor and link flavors to this certain comment
@@ -77,12 +75,11 @@ export const updateFlavor = async (req, res) => {
       const { id: flavor_id } = req.params;
       const { 
         name,
-        type_fruit_ice,
-        type_cream_ice,
-        ice_color: {
-          color_primary,
-          color_secondary,
-          color_tertiary,
+        type_fruit,
+        type_cream,
+        color: {
+          primary,
+          secondary
         },
       } = req.body;
       // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
@@ -90,12 +87,11 @@ export const updateFlavor = async (req, res) => {
         { _id: flavor_id },
         { 
           name,
-          type_fruit_ice,
-          type_cream_ice,
-          ice_color: {
-            color_primary,
-            color_secondary,
-            color_tertiary, 
+          type_fruit,
+          type_cream,
+          color: {
+            primary,
+            secondary
           },
         }
       )
