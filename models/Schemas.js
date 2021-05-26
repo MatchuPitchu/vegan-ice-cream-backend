@@ -115,8 +115,8 @@ const flavorSchema = new Schema( {
     primary: { type: String, validator: [colorValidator, 'Invalid color'], required: true},
     secondary: { type: String, validator: [colorValidator, 'Invalid color']}
   },
-  comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment', required: true }],
-  users_list: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+  // comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment', required: true }],
+  // users_list: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 export const User = model('User', userSchema);
