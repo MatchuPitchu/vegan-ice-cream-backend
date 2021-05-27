@@ -14,10 +14,10 @@ const userSchema = new Schema({
   confirmed: { type: Boolean, default: false },
   password: { type: String, select: false },
   home_city: {
-    city: { type: String, default: 'Berlin' },
+    city: { type: String, default: '' },
     geo: {
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true }
+      lat: { type: Number },
+      lng: { type: Number }
     }
   },
   comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
