@@ -62,31 +62,37 @@ export const updateUser = async (req, res) => {
       email, 
       newPassword,
       repeatPassword,
-      password, 
-      home_city: {
-        city,
-        geo: {
-          lat,
-          lng
-        }
-      }
+      password
     } = req.body;
+
+    // can only create const when this exists, otherwise error
+    if(req.body.home_city !== undefined) {
+      const {
+        home_city: {
+          city,
+          geo: {
+            lat,
+            lng
+          }
+        } 
+      } = req.body
+    };
 
     // define object which includes all key-values to update
     let updateBlock = {};
-    if(name) updateBlock.name = name;
-    if(email) {
-      updateBlock.email = email;
-      // if new email than user has to confirm this account first
-      updateBlock.confirmed = false;
-    }
-    if(city) updateBlock.home_city = { 
+    if(req.body.home_city !== undefined) updateBlock.home_city = { 
       city,
       geo: {
         lat,
         lng
       }
     };
+    if(name) updateBlock.name = name;
+    if(email) {
+      updateBlock.email = email;
+      // if new email than user has to confirm this account first
+      updateBlock.confirmed = false;
+    }
 
     // search user with user._id and check correct password
     const foundUser = await User.findOne({ _id: id }).select('+password');
