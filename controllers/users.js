@@ -1,9 +1,8 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 // import all schemas that have a reference to 'User' and
 // which has to be 'informed' about creating or updating of new User
-import { User, Location, Flavor } from "../models/Schemas.js";
+import { User } from "../models/Schemas.js";
+import { sendConfirmNewMail } from '../Utils/mailer.js';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -61,6 +60,8 @@ export const updateUser = async (req, res) => {
     const { 
       name, 
       email, 
+      newPassword,
+      repeatPassword,
       password, 
       home_city: {
         city,
@@ -68,33 +69,51 @@ export const updateUser = async (req, res) => {
           lat,
           lng
         }
-      },
-      favorite_locations, 
-      favorite_flavors 
+      }
     } = req.body;
-    const foundUser = await User.findOne({ email });
-    if (foundUser) throw new Error('Email already taken');
-    const hashPassword = await bcrypt.hash(password, 12);
+
+    // define object which includes all key-values to update
+    let updateBlock = {};
+    if(name) updateBlock.name = name;
+    if(email) {
+      updateBlock.email = email;
+      // if new email than user has to confirm this account first
+      updateBlock.confirmed = false;
+    }
+    if(city) updateBlock.home_city = { 
+      city,
+      geo: {
+        lat,
+        lng
+      }
+    };
+
+    // search user with user._id and check correct password
+    const foundUser = await User.findOne({ _id: id }).select('+password');
+    const passwordCheck = await bcrypt.compare(password, foundUser.password);
+    if (!passwordCheck) throw new Error('Password is incorrect');
+
+    // if new mail already exists, than error
+    const foundMail = await User.findOne({ email });
+    if (foundMail) throw new Error('Email already taken');
+
+    // if new password exists and matches repeatPassword, than hash password before saving in DB: https://www.npmjs.com/package/bcrypt
+    if(newPassword) {
+      if (newPassword && newPassword !== repeatPassword) res.status(400).json('Please check whether you have entered the same password twice')
+      const hashPassword = await bcrypt.hash(newPassword, 12);
+      updateBlock.password = hashPassword;
+    }
+
     // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     const updatedUser = await User.findOneAndUpdate(
         { _id: id },
-        { 
-          name, 
-          email, 
-          password: hashPassword, 
-          home_city: {
-            city,
-            geo: {
-              lat,
-              lng
-            }
-          }, 
-          favorite_locations, 
-          favorite_flavors 
-        },
+        { $set: updateBlock },
         { new: true }
-      ).populate('_id', 'name', 'email', 'favorite_locations', 'favorite_flavors');
-    res.status(200).json(updatedUser);
+      )
+
+    if(email) await sendConfirmNewMail({toUser: updatedUser, user_id: updatedUser._id})
+
+    res.status(200).json({success: 'User profile updated'});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
