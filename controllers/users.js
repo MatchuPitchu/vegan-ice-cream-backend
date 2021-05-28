@@ -65,26 +65,14 @@ export const updateUser = async (req, res) => {
       password
     } = req.body;
 
-    // can only create const when this exists, otherwise error
-    if(req.body.home_city !== undefined) {
-      const {
-        home_city: {
-          city,
-          geo: {
-            lat,
-            lng
-          }
-        } 
-      } = req.body
-    };
-
     // define object which includes all key-values to update
     let updateBlock = {};
+    // can only create key in object when home_city exists, otherwise error
     if(req.body.home_city !== undefined) updateBlock.home_city = { 
-      city,
+      city: req.body.home_city.city ,
       geo: {
-        lat,
-        lng
+        lat: req.body.home_city.geo.lat,
+        lng: req.body.home_city.geo.lng,
       }
     };
     if(name) updateBlock.name = name;
