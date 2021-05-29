@@ -45,6 +45,27 @@ export const getAllLocationsInViewport = async (req, res)=> {
   }
 }
 
+export const getTopLocationsInCity = async (req, res)=> {
+  const limit = parseInt(req.query.limit);
+
+  try {
+    const { city } = req.body;
+    const topLocations = await Location.find({ 
+        "address.city": city,
+        "location_rating_quality": { $gt: 2},
+        "location_rating_vegan_offer": { $gt: 2},
+      })
+      .limit(limit)
+      .sort({location_rating_vegan_offer: -1, location_rating_quality: -1})
+      .populate({
+        path: 'flavors_listed', select: 'name color'
+      })
+    res.json(topLocations);
+  } catch (error) {
+    res.status(500).json({ message: error.message})
+  }
+}
+
 export const getSingleLocation = async (req, res)=> {
   try {
       const { id } = req.params;
