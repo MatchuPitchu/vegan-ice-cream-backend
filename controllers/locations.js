@@ -21,6 +21,15 @@ export const getAllLocation = async (req, res)=> {
   }
 }
 
+export const getAllCitiesWithLocations = async (req, res)=> {
+  try {
+    const cities = await Location.find().distinct("address.city")
+    res.json(cities);
+  } catch (error) {
+    res.status(500).json({ message: error.message})
+  }
+}
+
 export const getAllLocationsInViewport = async (req, res)=> {
   const limit = parseInt(req.query.limit);
 
