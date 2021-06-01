@@ -51,10 +51,9 @@ export const register = async (req, res) => {
 export const activateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const confirmed = true;
     await User.findOneAndUpdate(
       { _id: id },
-      { confirmed },
+      { confirmed: true },
       { new: true }
     );
     res.status(200).json({message: 'Aktivierung des Mail-Accounts erfolgreich'});
@@ -110,7 +109,7 @@ export const setNewPassword = async (req, res) => {
     const hashPassword = await bcrypt.hash(password, 12);
     const updatedUser = await User.findOneAndUpdate(
       { resetToken, needs_reset: true, email },
-      { password: hashPassword, needs_reset: false, resetToken: '' },
+      { password: hashPassword, needs_reset: false, confirmed: true, resetToken: '' },
       { new: true }
     );
     if(updatedUser) res.status(200).json({message: 'Passwort erfolgreich erneuert'});
