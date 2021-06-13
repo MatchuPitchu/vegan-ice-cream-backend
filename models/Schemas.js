@@ -53,7 +53,8 @@ commentSchema.statics.getAvgRatingQuality = async function (location_id) {
   ]);
   try {
     await this.model('Location').findByIdAndUpdate(location_id, {
-      location_rating_quality: Math.ceil(ratingAggregation[0].rating_quality)
+      // Using math.round() workaround to round average rating to 1 decimal place
+      location_rating_quality: Math.round(ratingAggregation[0].rating_quality * 10) / 10
     });
   } catch (error) {}
 };
@@ -66,7 +67,7 @@ commentSchema.statics.getAvgRatingOffer = async function (location_id) {
   ]);
   try {
     await this.model('Location').findByIdAndUpdate(location_id, {
-      location_rating_vegan_offer: Math.ceil(ratingAggregation[0].rating_vegan_offer)
+      location_rating_vegan_offer: Math.round(ratingAggregation[0].rating_vegan_offer * 10) / 10
     });
   } catch (error) {}
 };
