@@ -142,7 +142,7 @@ export const createLocation = async (req, res)=> {
     };
 }
 
-export const updatePricingLocation = async (req, res) => {
+export const createPricingLocation = async (req, res) => {
   try {
     const { id } = req.params;
     const { pricing } = req.body;
