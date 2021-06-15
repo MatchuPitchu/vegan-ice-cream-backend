@@ -103,7 +103,7 @@ const locationSchema = new Schema( {
   location_rating_vegan_offer: { type: Number },
   // User can update this value in comment/rating form in frontend => new value overwrites previous value
   // value is rounded to 2 decimals
-  pricing: { type: Number, set: v => Math.round(v * 100) / 100 },
+  pricing: [{ type: Number, set: v => Math.round(v * 100) / 100 }],
 });
 
 // autoincrement location_num every time a new location is created
