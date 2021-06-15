@@ -7,8 +7,8 @@ import {
   getSingleLocation, 
   getAllComAndFlavOfLocation, 
   createLocation,
+  createPricingLocation,
   updateLocation, 
-  updatePricingLocation,
   deleteLocation 
 } from '../controllers/locations.js';
 import verifyToken from '../middlewares/verifyToken.js';
@@ -22,8 +22,8 @@ locationRouter.post('/top-in-city', getTopLocationsInCity);
 locationRouter.get('/:id', getSingleLocation);
 locationRouter.get('/:id/all-comments-flavors', getAllComAndFlavOfLocation);
 locationRouter.post('/', createLocation);
+locationRouter.post('/pricing/:id', verifyToken, createPricingLocation);
 locationRouter.put('/:id', updateLocation);
-locationRouter.put('/pricing/:id', verifyToken, updatePricingLocation);
 // locationRouter.delete('/:id', deleteLocation);
 
 export default locationRouter;
