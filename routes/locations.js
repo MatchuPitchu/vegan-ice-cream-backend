@@ -11,6 +11,7 @@ import {
   updatePricingLocation,
   deleteLocation 
 } from '../controllers/locations.js';
+import verifyToken from '../middlewares/verifyToken.js';
 
 const locationRouter = express.Router();
 
@@ -22,7 +23,7 @@ locationRouter.get('/:id', getSingleLocation);
 locationRouter.get('/:id/all-comments-flavors', getAllComAndFlavOfLocation);
 locationRouter.post('/', createLocation);
 locationRouter.put('/:id', updateLocation);
-locationRouter.put('/pricing/:id', updatePricingLocation);
+locationRouter.put('/pricing/:id', verifyToken, updatePricingLocation);
 // locationRouter.delete('/:id', deleteLocation);
 
 export default locationRouter;
