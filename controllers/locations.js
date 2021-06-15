@@ -149,7 +149,7 @@ export const updatePricingLocation = async (req, res) => {
     // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     const updatedLocation = await Location.findOneAndUpdate(
       { _id: id },
-      { pricing },
+      { $addToSet: { pricing: [pricing] } },
       { new: true }
     )
     res.json(updatedLocation);
