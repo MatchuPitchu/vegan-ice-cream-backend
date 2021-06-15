@@ -142,6 +142,22 @@ export const createLocation = async (req, res)=> {
     };
 }
 
+export const updatePricingLocation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { pricing } = req.body;
+    // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
+    const updatedLocation = await Location.findOneAndUpdate(
+      { _id: id },
+      { pricing },
+      { new: true }
+    )
+    res.json(updatedLocation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // users (logged in) and owners can update location data
 export const updateLocation = async (req, res) => {
     try {
