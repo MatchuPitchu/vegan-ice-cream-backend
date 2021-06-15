@@ -34,12 +34,12 @@ const commentSchema = new Schema( {
   location_id: { type: Schema.Types.ObjectId, ref: 'Location', required: true },
   flavors_referred: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
   text: { type: String, required: true },
+  rating_vegan_offer: { type: Number, min: 0, max: 10, required: true},
   rating_quality: { type: Number, min: 0, max: 10, required: true},
   bio: { type: Boolean },
   vegan: { type: Boolean },
   lactose_free: { type: Boolean },
   not_specified: { type: Boolean },
-  rating_vegan_offer: { type: Number, min: 0, max: 10, required: true},
   date: { type: Date, default: Date.now }
 });
 
@@ -100,7 +100,10 @@ const locationSchema = new Schema( {
   comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   flavors_listed: [{ type: Schema.Types.ObjectId, ref: 'Flavor'}],
   location_rating_quality: { type: Number },
-  location_rating_vegan_offer: { type: Number }
+  location_rating_vegan_offer: { type: Number },
+  // User can update this value in comment/rating form in frontend => new value overwrites previous value
+  // value is rounded to 2 decimals
+  pricing: { type: Number, set: v => Math.round(v * 100) / 100 },
 });
 
 // autoincrement location_num every time a new location is created
@@ -116,8 +119,6 @@ const flavorSchema = new Schema( {
     primary: { type: String, validator: [colorValidator, 'Invalid color'], required: true},
     secondary: { type: String, validator: [colorValidator, 'Invalid color']}
   },
-  // comments_list: [{ type: Schema.Types.ObjectId, ref: 'Comment', required: true }],
-  // users_list: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 export const User = model('User', userSchema);

@@ -1,5 +1,16 @@
 import express from 'express';
-import { getAllLocation, getAllCitiesWithLocations, getAllLocationsInViewport, getTopLocationsInCity, getSingleLocation, getAllComAndFlavOfLocation, createLocation, updateLocation, deleteLocation } from '../controllers/locations.js';
+import { 
+  getAllLocation,
+  getAllCitiesWithLocations, 
+  getAllLocationsInViewport, 
+  getTopLocationsInCity, 
+  getSingleLocation, 
+  getAllComAndFlavOfLocation, 
+  createLocation,
+  updateLocation, 
+  updatePricingLocation,
+  deleteLocation 
+} from '../controllers/locations.js';
 
 const locationRouter = express.Router();
 
@@ -11,6 +22,7 @@ locationRouter.get('/:id', getSingleLocation);
 locationRouter.get('/:id/all-comments-flavors', getAllComAndFlavOfLocation);
 locationRouter.post('/', createLocation);
 locationRouter.put('/:id', updateLocation);
-locationRouter.delete('/:id', deleteLocation);
+locationRouter.put('/pricing/:id', updatePricingLocation);
+// locationRouter.delete('/:id', deleteLocation);
 
 export default locationRouter;
