@@ -38,10 +38,14 @@ export const sendConfirmationEmail = ({toUser, user_id}) => {
                   </a>
                 </div>
                 <div style="margin-right: 30px">
-                  <img title="AppStore" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/apple-store-logo-colored-bordered.png" alt="AppStore" width="32">
+                  <a target="_blank" href="https://eis-mit-stil.netlify.app/ios">
+                    <img title="AppStore" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/apple-store-logo-colored-bordered.png" alt="AppStore" width="32">
+                  </a>
                 </div>
                 <div>
-                  <img title="Google Play" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/playmarket-logo-colored-bordered.png" alt="Google Play" width="32">
+                  <a target="_blank" href="https://play.google.com/store/apps/details?id=eismitstil.app">
+                    <img title="Google Play" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/playmarket-logo-colored-bordered.png" alt="Google Play" width="32">
+                  </a>
                 </div>
               </div>
             </div>
@@ -95,10 +99,14 @@ export const sendResetPasswordEmail = ({toUser, resetToken}) => {
                   </a>
                 </div>
                 <div style="margin-right: 30px">
-                  <img title="AppStore" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/apple-store-logo-colored-bordered.png" alt="AppStore" width="32">
+                  <a target="_blank" href="https://eis-mit-stil.netlify.app/ios">
+                    <img title="AppStore" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/apple-store-logo-colored-bordered.png" alt="AppStore" width="32">
+                  </a>
                 </div>
                 <div>
-                  <img title="Google Play" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/playmarket-logo-colored-bordered.png" alt="Google Play" width="32">
+                  <a target="_blank" href="https://play.google.com/store/apps/details?id=eismitstil.app">
+                    <img title="Google Play" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/playmarket-logo-colored-bordered.png" alt="Google Play" width="32">
+                  </a>
                 </div>
               </div>
             </div>
@@ -152,10 +160,14 @@ export const sendConfirmNewMail = ({toUser, user_id}) => {
                   </a>
                 </div>
                 <div style="margin-right: 30px">
-                  <img title="AppStore" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/apple-store-logo-colored-bordered.png" alt="AppStore" width="32">
+                  <a target="_blank" href="https://eis-mit-stil.netlify.app/ios">
+                    <img title="AppStore" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/apple-store-logo-colored-bordered.png" alt="AppStore" width="32">
+                  </a>
                 </div>
                 <div>
-                  <img title="Google Play" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/playmarket-logo-colored-bordered.png" alt="Google Play" width="32">
+                  <a target="_blank" href="https://play.google.com/store/apps/details?id=eismitstil.app">
+                    <img title="Google Play" src="https://rovwyr.stripocdn.email/content/assets/img/other-icons/logo-colored-bordered/playmarket-logo-colored-bordered.png" alt="Google Play" width="32">
+                  </a>
                 </div>
               </div>
             </div>
