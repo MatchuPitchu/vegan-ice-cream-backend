@@ -114,6 +114,11 @@ export const updateComment = async (req, res) => {
       const singleComment = await Comment.findById(id);   
       if(!singleComment) return res.status(404).json({ message: `Comment with ${id} not found>`});
       await Comment.deleteOne({ _id: id });
+
+      // delete comment id also in the refered User collection and Location collection
+      await User.findOneAndUpdate({ _id: singleComment.user_id }, {"$pull": { "comments_list": singleComment._id }}  );
+      await Location.findOneAndUpdate({ _id: singleComment.location_id }, {"$pull": { "comments_list": newComment._id }}  );
+
       res.json({ success: `Comment with id of ${id} was deleted` });
     } catch (error) {
       res.status(500).json({ error: error.message });
