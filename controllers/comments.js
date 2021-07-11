@@ -59,8 +59,8 @@ export const createComment = async (req, res)=> {
         // Update arrays of other schemas that use ref "Comment"; update with _id of newComment in order to inform about creation of new comment
         // findOneAndUpdate() https://mongoosejs.com/docs/tutorials/findoneandupdate.html
         // Update Operators: https://docs.mongodb.com/manual/reference/operator/update/
-        const updateUser = await User.findOneAndUpdate({ _id: user_id }, {"$push": { "comments_list": newComment._id }}  );
-        const updateLocation = await Location.findOneAndUpdate({ _id: location_id }, {"$push": { "comments_list": newComment._id }}  );
+        const updateUser = await User.findOneAndUpdate({ _id: user_id }, {$push: { "comments_list": newComment._id }}  );
+        const updateLocation = await Location.findOneAndUpdate({ _id: location_id }, {$push: { "comments_list": newComment._id }}  );
         res.status(201).json(newComment);
     } catch (error) {
         res.status(500).json({ error: error.message});
@@ -111,13 +111,23 @@ export const updateComment = async (req, res) => {
   export const deleteComment = async (req, res) => {
     try {
       const { id } = req.params;
+      const { user_id } = req.body;
       const singleComment = await Comment.findById(id);   
       if(!singleComment) return res.status(404).json({ message: `Comment with ${id} not found>`});
+      // Check if user is author of comment
+      if(singleComment.user_id != user_id) return res.status(403).json({ message: 'You are not allowed to delete this comment'}); 
       await Comment.deleteOne({ _id: id });
 
       // delete comment id also in the refered User collection and Location collection
-      await User.findOneAndUpdate({ _id: singleComment.user_id }, {"$pull": { "comments_list": singleComment._id }}  );
-      await Location.findOneAndUpdate({ _id: singleComment.location_id }, {"$pull": { "comments_list": newComment._id }}  );
+      await User.findOneAndUpdate(
+        { _id: singleComment.user_id }, 
+        {$pull: { "comments_list": id }}  
+      );
+      
+      await Location.findOneAndUpdate(
+        { _id: singleComment.location_id }, 
+        {$pull: { "comments_list": id }}  
+      );
 
       res.json({ success: `Comment with id of ${id} was deleted` });
     } catch (error) {
