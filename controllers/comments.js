@@ -100,7 +100,7 @@ export const updateComment = async (req, res) => {
           },
           // set the new option to true to return the document after update was applied
           { new: true }
-        )
+        ).populate({ path: 'location_id', select: 'name' })
       res.json(updatedComment);
     } catch (error) {
       res.status(500).json({ error: error.message });
