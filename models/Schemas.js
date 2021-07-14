@@ -72,15 +72,25 @@ commentSchema.statics.getAvgRatingOffer = async function (location_id) {
   } catch (error) {}
 };
 // event listener method is triggerd after I save smth
+// post middleware are executed after the hooked method and all of its pre middleware have completed
 commentSchema.post('save', function () {
   Comment.getAvgRatingQuality(this.location_id);
   Comment.getAvgRatingOffer(this.location_id);
 });
 // event listener method is triggerd before I remove smth
-commentSchema.pre('remove', function () {
-  Comment.getAvgRatingQuality(this.location_id);
-  Comment.getAvgRatingOffer(this.location_id);
+// Pre middleware functions are executed one after another, when each middleware calls next.
+commentSchema.pre('deleteOne', async function () {
+  const docToUpdate = await this.model.findOne(this.getFilter());
+  Comment.getAvgRatingQuality(docToUpdate.location_id);
+  Comment.getAvgRatingOffer(docToUpdate.location_id);
 });
+
+// after updating comment, this middleware is executed in order to update avg ratings
+commentSchema.post('findOneAndUpdate', async function () {
+  const docToUpdate = await this.model.findOne(this.getFilter());
+  Comment.getAvgRatingQuality(docToUpdate.location_id);
+  Comment.getAvgRatingOffer(docToUpdate.location_id);
+})
 
 const locationSchema = new Schema( {
   location_num: { type: Number },
