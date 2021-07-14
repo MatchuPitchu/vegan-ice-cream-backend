@@ -100,7 +100,7 @@ export const updateComment = async (req, res) => {
           },
           // set the new option to true to return the document after update was applied
           { new: true }
-        ).populate({ path: 'location_id', select: 'name' })
+        ).populate({ path: 'location_id', select: 'name' }).exec()
       res.json(updatedComment);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -111,7 +111,10 @@ export const updateComment = async (req, res) => {
   export const deleteComment = async (req, res) => {
     try {
       const { id } = req.params;
-      const { user_id } = req.body;
+      const { 
+        user_id,
+        location_id
+      } = req.body;
       const singleComment = await Comment.findById(id);   
       if(!singleComment) return res.status(404).json({ message: `Comment with ${id} not found>`});
       // Check if user is author of comment
