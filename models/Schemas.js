@@ -77,15 +77,9 @@ commentSchema.post('save', function () {
   Comment.getAvgRatingQuality(this.location_id);
   Comment.getAvgRatingOffer(this.location_id);
 });
-// event listener method is triggerd before I remove smth
-// Pre middleware functions are executed one after another, when each middleware calls next.
-commentSchema.pre('deleteOne', async function () {
-  const docToUpdate = await this.model.findOne(this.getFilter());
-  Comment.getAvgRatingQuality(docToUpdate.location_id);
-  Comment.getAvgRatingOffer(docToUpdate.location_id);
-});
 
 // after updating comment, this middleware is executed in order to update avg ratings
+// also event listener method is triggerd after removing comment
 commentSchema.post('findOneAndUpdate', async function () {
   const docToUpdate = await this.model.findOne(this.getFilter());
   Comment.getAvgRatingQuality(docToUpdate.location_id);

@@ -115,20 +115,25 @@ export const updateComment = async (req, res) => {
         user_id,
         location_id
       } = req.body;
-      const singleComment = await Comment.findById(id);   
+      const singleComment = await Comment.findById(id);
       if(!singleComment) return res.status(404).json({ message: `Comment with ${id} not found>`});
       // Check if user is author of comment
       if(singleComment.user_id != user_id) return res.status(403).json({ message: 'You are not allowed to delete this comment'}); 
+      
+      // last step delete comment
       await Comment.deleteOne({ _id: id });
+
+      // only call findOneAndUpdate to trigger avg calculation in schemas.js
+      await Comment.findOneAndUpdate({});
 
       // delete comment id also in the refered User collection and Location collection
       await User.findOneAndUpdate(
-        { _id: singleComment.user_id }, 
-        {$pull: { "comments_list": id }}  
+        { _id: user_id }, 
+        {$pull: { "comments_list": id }}
       );
-      
+
       await Location.findOneAndUpdate(
-        { _id: singleComment.location_id }, 
+        { _id: location_id },
         {$pull: { "comments_list": id }}  
       );
 
