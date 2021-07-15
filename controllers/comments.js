@@ -111,31 +111,30 @@ export const updateComment = async (req, res) => {
   export const deleteComment = async (req, res) => {
     try {
       const { id } = req.params;
-      const { 
-        user_id,
-        location_id
-      } = req.body;
+      const { user_id } = req.body;
       const singleComment = await Comment.findById(id);
+      
       if(!singleComment) return res.status(404).json({ message: `Comment with ${id} not found>`});
       // Check if user is author of comment
       if(singleComment.user_id != user_id) return res.status(403).json({ message: 'You are not allowed to delete this comment'}); 
       
-      // last step delete comment
-      await Comment.deleteOne({ _id: id });
-
-      // only call findOneAndUpdate to trigger avg calculation in schemas.js
-      await Comment.findOneAndUpdate({});
-
       // delete comment id also in the refered User collection and Location collection
       await User.findOneAndUpdate(
-        { _id: user_id }, 
+        { _id: singleComment.user_id },
         {$pull: { "comments_list": id }}
       );
 
       await Location.findOneAndUpdate(
-        { _id: location_id },
+        { _id: singleComment.location_id },
         {$pull: { "comments_list": id }}  
       );
+
+      // last step delete comment
+      await Comment.deleteOne({ _id: id });
+
+      // only call findOneAndUpdate to trigger avg calculation in schemas.js
+      // attention: produces error message when document is empty, i.e. no comments are in database
+      await Comment.findOneAndUpdate({});
 
       res.json({ success: `Comment with id of ${id} was deleted` });
     } catch (error) {
