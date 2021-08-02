@@ -10,6 +10,8 @@ export const getAllLocation = async (req, res)=> {
 
   try {
     const locations = await Location.find()
+      // sort results according to these criteria in descending order
+      .sort({ location_rating_vegan_offer: -1, location_rating_quality: -1 })
       .limit(limit)
       .skip(skipIndex)
       .populate({
