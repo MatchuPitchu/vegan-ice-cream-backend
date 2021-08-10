@@ -154,7 +154,8 @@ export const createPricingLocation = async (req, res) => {
     // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     const updatedLocation = await Location.findOneAndUpdate(
       { _id: id },
-      { $addToSet: { pricing: [pricing] } },
+      // use $set to replace existing array with new
+      { $set: { pricing: [pricing] } },
       { new: true }
     )
     res.json(updatedLocation);
