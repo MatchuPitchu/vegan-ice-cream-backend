@@ -158,6 +158,22 @@ export const addFavLocation = async (req, res) => {
   }
 };
 
+export const updateFavList = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { updated_fav_list } = req.body;
+    const updatedUser = await User.findOneAndUpdate(
+      {_id: id},
+      // use $set to replace existing array with new
+      { $set: { favorite_locations: updated_fav_list } },
+      { new: true }
+    );
+    res.status(200).json('Update erfolgreich');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const addNumLocationLastVisit = async (req, res) => {
   try {
     const { id } = req.params;
@@ -166,7 +182,7 @@ export const addNumLocationLastVisit = async (req, res) => {
       {_id: id},
       { $set: { num_loc_last_visit: current_num_loc } }
     );
-    res.status(201).json('Update erfolgreich');
+    res.status(200).json('Update erfolgreich');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

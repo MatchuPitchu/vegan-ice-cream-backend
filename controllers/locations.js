@@ -158,7 +158,7 @@ export const createPricingLocation = async (req, res) => {
       { $set: { pricing: [pricing] } },
       { new: true }
     )
-    res.json(updatedLocation);
+    res.status(200).json(updatedLocation);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

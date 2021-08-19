@@ -6,8 +6,9 @@ import {
   deleteUser,
   getAllInfosFromUser, 
   removeFavLocation, 
-  addFavLocation, 
-  addNumLocationLastVisit 
+  addFavLocation,
+  updateFavList,
+  addNumLocationLastVisit
 } from '../controllers/users.js';
 import verifyToken from '../middlewares/verifyToken.js';
 
@@ -23,6 +24,7 @@ userRouter.delete('/:id', verifyToken, deleteUser);
 userRouter.get('/:id/infos', verifyToken, getAllInfosFromUser);
 userRouter.put('/:id/remove-fav-loc', verifyToken, removeFavLocation);
 userRouter.put('/:id/add-fav-loc', verifyToken, addFavLocation);
+userRouter.put('/:id/update-fav-list', verifyToken, updateFavList);
 userRouter.put('/:id/num-loc-last-visit', verifyToken, addNumLocationLastVisit);
 
 export default userRouter;
