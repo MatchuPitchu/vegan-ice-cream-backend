@@ -1,15 +1,15 @@
 import express from 'express';
-import { 
+import {
   getAllLocation,
-  getAllCitiesWithLocations, 
-  getAllLocationsInViewport, 
-  getTopLocationsInCity, 
-  getSingleLocation, 
-  getAllComAndFlavOfLocation, 
+  getAllCitiesWithLocations,
+  getAllLocationsInViewport,
+  getTopLocationsInCity,
+  getSingleLocation,
+  getAllComAndFlavOfLocation,
   createLocation,
   createPricingLocation,
-  updateLocation, 
-  deleteLocation 
+  updateLocation,
+  deleteLocation,
 } from '../controllers/locations.js';
 import verifyToken from '../middlewares/verifyToken.js';
 
@@ -23,7 +23,8 @@ locationRouter.get('/:id', getSingleLocation);
 locationRouter.get('/:id/all-comments-flavors', getAllComAndFlavOfLocation);
 locationRouter.post('/', createLocation);
 locationRouter.post('/pricing/:id', verifyToken, createPricingLocation);
-locationRouter.put('/:id', updateLocation);
+// no solution implemented yet: only users (logged in) and owners can update location data
+// locationRouter.put('/:id', updateLocation);
 // locationRouter.delete('/:id', deleteLocation);
 
 export default locationRouter;
