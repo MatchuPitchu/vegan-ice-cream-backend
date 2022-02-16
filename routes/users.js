@@ -1,22 +1,22 @@
 import express from 'express';
-import { 
-  getAllUsers, 
-  getSingleUser,
+import {
+  // getAllUsers,
+  // getSingleUser,
   updateUser,
   deleteUser,
-  getAllInfosFromUser, 
-  removeFavLocation, 
+  getAllInfosFromUser,
+  removeFavLocation,
   addFavLocation,
   updateFavList,
-  addNumLocationLastVisit
+  addNumLocationLastVisit,
 } from '../controllers/users.js';
 import verifyToken from '../middlewares/verifyToken.js';
 
 const userRouter = express.Router();
 
-// QUESTION: SET TO PRIVATE LATER IN HEROKU???
-userRouter.get('/', getAllUsers);
-userRouter.get('/:id', getSingleUser);
+// GET requests are deactivated since they would be public with user data
+// userRouter.get('/', getAllUsers);
+// userRouter.get('/:id', getSingleUser);
 
 // Only access to these pages if verifyToken passed
 userRouter.put('/:id', verifyToken, updateUser);

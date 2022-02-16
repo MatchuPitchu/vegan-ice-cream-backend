@@ -1,72 +1,10 @@
 #%RAML 1.0
 ---
 title: Eis mit Stil - Vegan Ice Cream App
-version: v1.1
+version: v1.2
 
 /users:
-  /:
-    get:
-        description: Retrieve all users
-        responses:
-          200:
-            body:
-              application/json:
-                example: |
-                  [
-                    {
-                      "_id": "7a9427648b0beebeb69579cc",
-                      "name": "Max Mustermann",
-                      "email": "max@posteo.de",
-                      "home_city": "Berlin",
-                      "comments": [
-                          {
-                            "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
-                          },
-                          {
-                            "text": "At vero eos et accusam et justo duo doloes."
-                          }
-                      ],
-                      "favorite_locations": [
-                          "6089c00433fc7d0a68c927ae",
-                          "60867e1920fc8b983cbc9312"
-                      ],
-                      "favorite_flavors": [
-                          "6089bf2833fc7d0a68c927ad",
-                          "608a8ebab2523447006b3b68"
-                      ]
-                    }
-                  ]
   /{id}:
-    get:
-      description: Retrieve one specific user
-      responses:
-        200:
-          body:
-            application/json:
-              example: |
-                {
-                  {
-                    "_id": "7a9427648b0beebeb69579cc",
-                    "name": "Max Mustermann",
-                    "email": "max@posteo.de",
-                    "comments": [
-                        {
-                          "text": "Sed diam voluptua. At vero eos et accusam et justo duo doloes."
-                        },
-                        {
-                          "text": "At vero eos et accusam et justo duo doloes."
-                        }
-                    ],
-                    "favorite_locations": [
-                        "6089c00433fc7d0a68c927ae",
-                        "60867e1920fc8b983cbc9312"
-                    ],
-                    "favorite_flavors": [
-                        "6089bf2833fc7d0a68c927ad",
-                        "608a8ebab2523447006b3b68"
-                    ]
-                  }
-                }
 
     put:
       description: Update one user
