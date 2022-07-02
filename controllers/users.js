@@ -40,7 +40,9 @@ export const updateUser = async (req, res) => {
     // if new password exists and matches repeatPassword, than hash password before saving in DB: https://www.npmjs.com/package/bcrypt
     if (newPassword) {
       if (newPassword && newPassword !== repeatPassword)
-        res.status(400).json('Please check whether you have entered the same password twice');
+        res
+          .status(400)
+          .json({ message: 'Please check whether you have entered the same password twice' });
       const hashPassword = await bcrypt.hash(newPassword, 12);
       updateBlock.password = hashPassword;
     }
@@ -54,7 +56,7 @@ export const updateUser = async (req, res) => {
 
     if (email) await sendConfirmNewMail({ toUser: updatedUser, user_id: updatedUser._id });
 
-    res.status(200).json({ success: 'User profile updated' });
+    res.status(200).json({ message: 'User profile updated' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
