@@ -8,17 +8,17 @@ import {
   register,
   setNewPassword,
 } from '../controllers/auth.js'
-import { loginBody, registerBody } from '../joi/schemas.js'
-import validateJoi from '../middlewares/validateJoi.js'
+import { loginBodySchema, registerBodySchema } from '../joi/schemas.js'
+import { validate } from '../middlewares/validateJoi.js'
 import verifyToken from '../middlewares/verifyToken.js'
 
 const authRouter = express.Router()
 
 // Only access to these pages if verifyToken passed
 authRouter.get('/verify-session', verifyToken, approvedSession)
-// Data validation with Joi
-authRouter.post('/register', validateJoi(registerBody), register)
-authRouter.post('/login', validateJoi(loginBody), login)
+// Data validation
+authRouter.post('/register', validate(registerBodySchema), register)
+authRouter.post('/login', validate(loginBodySchema), login)
 authRouter.put('/activate/user/:id', activateUser)
 authRouter.put('/reset-password', askResetPassword)
 authRouter.put('/new-password', setNewPassword)

@@ -18,16 +18,16 @@
     "dotenv": "^17.2.1",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
-    "joi": "^17.4.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.12.3",
     "mongoose-sequence": "^5.3.1",
-    "morgan": "^1.10.0",
-    "nodemailer": "^7.0.5"
+    "nodemailer": "^7.0.5",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "5.2.2",
+    "morgan": "^1.10.0",
     "nodemon": "^3.1.10",
-    "prettier": "^3.6.2",
-    "@trivago/prettier-plugin-sort-imports": "5.2.2"
+    "prettier": "^3.6.2"
   }
 }

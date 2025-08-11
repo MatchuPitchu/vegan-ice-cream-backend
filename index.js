@@ -21,7 +21,7 @@ const publicDir = path.join(__dirname, 'public')
 const app = express()
 const port = process.env.PORT || 5000
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 // to be able to receive and send Cookie in network, need origin (http of frontend) and

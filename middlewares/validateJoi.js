@@ -1,8 +1,11 @@
-const validateJoi = (schema) => (req, res, next) => {
-  const results = schema.validate(req.body)
-  // return important to finish execution of function befor going to next()
-  if (results.error) return res.status(400).json(results.error)
-  next()
-}
+import { ZodSchema } from 'zod/v4'
 
-export default validateJoi
+export const validate = (schema) => {
+  return (req, res, next) => {
+    const result = schema.safeParse(req.body)
+    if (!result.success) {
+      return res.status(400).json(result.error.errors)
+    }
+    next()
+  }
+}
