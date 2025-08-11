@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 import { User } from '../models/Schemas.js'
 
-const verifyToken = async (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
   try {
     const { token } = req.headers
     if (!token) throw new Error('No access: unauthorized')
@@ -24,5 +24,3 @@ const verifyToken = async (req, res, next) => {
     res.status(500).json({ error: error.message })
   }
 }
-
-export default verifyToken

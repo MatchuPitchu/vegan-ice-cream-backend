@@ -1,5 +1,3 @@
-import { ZodSchema } from 'zod/v4'
-
 export const validate = (schema) => {
   return (req, res, next) => {
     const result = schema.safeParse(req.body)

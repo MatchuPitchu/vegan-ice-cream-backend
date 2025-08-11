@@ -7,7 +7,7 @@ import {
   getSingleFlavor,
   updateFlavor,
 } from '../controllers/flavors.js'
-import verifyToken from '../middlewares/verifyToken.js'
+import { verifyToken } from '../middlewares/verifyToken.js'
 
 const flavorRouter = express.Router()
 

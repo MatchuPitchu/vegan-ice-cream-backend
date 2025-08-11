@@ -7,7 +7,7 @@ import {
   getSingleComment,
   updateComment,
 } from '../controllers/comments.js'
-import verifyToken from '../middlewares/verifyToken.js'
+import { verifyToken } from '../middlewares/verifyToken.js'
 
 const commentsRouter = express.Router()
 

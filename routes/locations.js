@@ -12,7 +12,7 @@ import {
   getTopLocationsInCity,
   updateLocation,
 } from '../controllers/locations.js'
-import verifyToken from '../middlewares/verifyToken.js'
+import { verifyToken } from '../middlewares/verifyToken.js'
 
 const locationRouter = express.Router()
 

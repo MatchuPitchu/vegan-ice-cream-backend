@@ -8,7 +8,7 @@ import {
   updateFavList,
   updateUser,
 } from '../controllers/users.js'
-import verifyToken from '../middlewares/verifyToken.js'
+import { verifyToken } from '../middlewares/verifyToken.js'
 
 const userRouter = express.Router()
 

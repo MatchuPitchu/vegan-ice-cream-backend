@@ -9,8 +9,8 @@ import {
   setNewPassword,
 } from '../controllers/auth.js'
 import { loginBodySchema, registerBodySchema } from '../joi/schemas.js'
-import { validate } from '../middlewares/validateJoi.js'
-import verifyToken from '../middlewares/verifyToken.js'
+import { validate } from '../middlewares/validate.js'
+import { verifyToken } from '../middlewares/verifyToken.js'
 
 const authRouter = express.Router()
 
