@@ -1,15 +1,22 @@
-import express from 'express';
-import { getAllComments, getSingleComment, createComment, updateComment, deleteComment } from '../controllers/comments.js'
-import verifyToken from '../middlewares/verifyToken.js';
+import express from 'express'
 
-const commentsRouter = express.Router();
+import {
+  createComment,
+  deleteComment,
+  getAllComments,
+  getSingleComment,
+  updateComment,
+} from '../controllers/comments.js'
+import verifyToken from '../middlewares/verifyToken.js'
 
-commentsRouter.get('/', getAllComments);
-commentsRouter.get('/:id', getSingleComment);
+const commentsRouter = express.Router()
+
+commentsRouter.get('/', getAllComments)
+commentsRouter.get('/:id', getSingleComment)
 
 // Only access to these pages if verifyToken passed
-commentsRouter.post('/:id', verifyToken, createComment);
-commentsRouter.put('/:id', verifyToken, updateComment);
-commentsRouter.delete('/:id', verifyToken, deleteComment);
+commentsRouter.post('/:id', verifyToken, createComment)
+commentsRouter.put('/:id', verifyToken, updateComment)
+commentsRouter.delete('/:id', verifyToken, deleteComment)
 
-export default commentsRouter;
+export default commentsRouter

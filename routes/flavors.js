@@ -1,14 +1,21 @@
-import express from 'express';
-import { getAllFlavors, getSingleFlavor, createFlavor, updateFlavor, deleteFlavor } from '../controllers/flavors.js';
-import verifyToken from '../middlewares/verifyToken.js';
+import express from 'express'
 
-const flavorRouter = express.Router();
+import {
+  createFlavor,
+  deleteFlavor,
+  getAllFlavors,
+  getSingleFlavor,
+  updateFlavor,
+} from '../controllers/flavors.js'
+import verifyToken from '../middlewares/verifyToken.js'
 
-flavorRouter.get('/', getAllFlavors);
-flavorRouter.get('/:id', getSingleFlavor);
+const flavorRouter = express.Router()
+
+flavorRouter.get('/', getAllFlavors)
+flavorRouter.get('/:id', getSingleFlavor)
 
 // Only access to these pages if verifyToken passed
-flavorRouter.post('/:id', verifyToken, createFlavor);
-flavorRouter.delete('/:id', verifyToken, deleteFlavor);
+flavorRouter.post('/:id', verifyToken, createFlavor)
+flavorRouter.delete('/:id', verifyToken, deleteFlavor)
 
-export default flavorRouter;
+export default flavorRouter

@@ -1,12 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
+
 // import all schemas that have a reference to 'Location' and
 // which has to be 'informed' about creating or updating of new Location
-import { Location } from '../models/Schemas.js';
+import { Location } from '../models/Schemas.js'
 
 export const getAllLocation = async (req, res) => {
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const skipIndex = (page - 1) * limit;
+  const page = parseInt(req.query.page)
+  const limit = parseInt(req.query.limit)
+  const skipIndex = (page - 1) * limit
 
   try {
     const locations = await Location.find()
@@ -17,27 +18,27 @@ export const getAllLocation = async (req, res) => {
       .populate({
         path: 'flavors_listed',
         select: 'name color',
-      });
-    res.json(locations);
+      })
+    res.json(locations)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 export const getAllCitiesWithLocations = async (req, res) => {
   try {
-    const cities = await Location.find().distinct('address.city');
-    res.json(cities);
+    const cities = await Location.find().distinct('address.city')
+    res.json(cities)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 export const getAllLocationsInViewport = async (req, res) => {
-  const limit = parseInt(req.query.limit);
+  const limit = parseInt(req.query.limit)
 
   try {
-    const { southLat, westLng, northLat, eastLng } = req.body;
+    const { southLat, westLng, northLat, eastLng } = req.body
     const locations = await Location.find({
       'address.geo.lat': { $gt: southLat, $lt: northLat },
       'address.geo.lng': { $gt: westLng, $lt: eastLng },
@@ -46,18 +47,18 @@ export const getAllLocationsInViewport = async (req, res) => {
         path: 'flavors_listed',
         select: 'name color',
       })
-      .limit(limit);
-    res.json(locations);
+      .limit(limit)
+    res.json(locations)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 export const getTopLocationsInCity = async (req, res) => {
-  const limit = parseInt(req.query.limit);
+  const limit = parseInt(req.query.limit)
 
   try {
-    const { city } = req.body;
+    const { city } = req.body
     const topLocations = await Location.find({
       'address.city': city,
       location_rating_quality: { $gt: 2 },
@@ -68,27 +69,27 @@ export const getTopLocationsInCity = async (req, res) => {
       .populate({
         path: 'flavors_listed',
         select: 'name color',
-      });
-    res.json(topLocations);
+      })
+    res.json(topLocations)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 export const getSingleLocation = async (req, res) => {
   try {
-    const { id } = req.params;
-    const singleLocation = await Location.findById(id);
-    if (!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>` });
-    res.json(singleLocation);
+    const { id } = req.params
+    const singleLocation = await Location.findById(id)
+    if (!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>` })
+    res.json(singleLocation)
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
 
 export const getAllComAndFlavOfLocation = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
     const singleLocation = await Location.findById(id)
       // Only return these both lists
       .populate({
@@ -99,13 +100,13 @@ export const getAllComAndFlavOfLocation = async (req, res) => {
         ],
         options: { sort: { date: -1 } }, // set newest comment on top
       })
-      .populate('flavors_listed');
-    if (!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>` });
-    res.json(singleLocation);
+      .populate('flavors_listed')
+    if (!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>` })
+    res.json(singleLocation)
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
 
 export const createLocation = async (req, res) => {
   try {
@@ -120,7 +121,7 @@ export const createLocation = async (req, res) => {
         geo: { lat, lng },
       },
       location_url,
-    } = req.body;
+    } = req.body
     const newLocation = await Location.create({
       _id: new mongoose.Types.ObjectId(),
       name,
@@ -136,34 +137,34 @@ export const createLocation = async (req, res) => {
         },
       },
       location_url,
-    });
-    res.status(201).json(newLocation);
+    })
+    res.status(201).json(newLocation)
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
 
 export const createPricingLocation = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { pricing } = req.body;
+    const { id } = req.params
+    const { pricing } = req.body
     // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     const updatedLocation = await Location.findOneAndUpdate(
       { _id: id },
       // use $set to replace existing array with new
       { $set: { pricing: [pricing] } },
-      { new: true }
-    );
-    res.status(200).json(updatedLocation);
+      { new: true },
+    )
+    res.status(200).json(updatedLocation)
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
 
 // users (logged in) and owners can update location data
 export const updateLocation = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
     const {
       name,
       address: {
@@ -175,7 +176,7 @@ export const updateLocation = async (req, res) => {
         geo: { lat, lng },
       },
       location_url,
-    } = req.body;
+    } = req.body
     // findOneAndUpdate: https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     const updatedLocation = await Location.findOneAndUpdate(
       { _id: id },
@@ -194,23 +195,23 @@ export const updateLocation = async (req, res) => {
         },
         location_url,
       },
-      { new: true }
-    );
-    res.json(updatedLocation);
+      { new: true },
+    )
+    res.json(updatedLocation)
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
 
 // only admin can delete location
 export const deleteLocation = async (req, res) => {
   try {
-    const { id } = req.params;
-    const singleLocation = await Location.findById(id);
-    if (!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>` });
-    await Location.deleteOne({ _id: id });
-    res.json({ success: `Location with id of ${id} was deleted` });
+    const { id } = req.params
+    const singleLocation = await Location.findById(id)
+    if (!singleLocation) return res.status(404).json({ message: `Location with ${id} not found>` })
+    await Location.deleteOne({ _id: id })
+    res.json({ success: `Location with id of ${id} was deleted` })
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
