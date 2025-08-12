@@ -1,11 +1,6 @@
 import mongoose from 'mongoose'
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-})
+mongoose.connect(process.env.MONGO_URI)
 
 // If MongoDB connection err
 const db = mongoose.connection

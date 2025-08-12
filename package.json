@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^5.12.3",
+    "mongoose": "^8.17.1",
     "mongoose-sequence": "^6.0.1",
     "nodemailer": "^7.0.5",
     "zod": "^4.0.17"
