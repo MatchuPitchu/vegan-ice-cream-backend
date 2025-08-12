@@ -27,8 +27,8 @@ importers:
         specifier: ^5.12.3
         version: 5.13.23
       mongoose-sequence:
-        specifier: ^5.3.1
-        version: 5.3.1(mongoose@5.13.23)
+        specifier: ^6.0.1
+        version: 6.0.1(mongoose@5.13.23)
       nodemailer:
         specifier: ^7.0.5
         version: 7.0.5
@@ -130,8 +130,8 @@ packages:
   array-flatten@1.1.1:
     resolution: {integrity: sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==}
 
-  async@2.6.4:
-    resolution: {integrity: sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==}
+  async@3.2.6:
+    resolution: {integrity: sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==}
 
   basic-auth@2.0.1:
     resolution: {integrity: sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==}
@@ -435,10 +435,10 @@ packages:
     peerDependencies:
       mongoose: '*'
 
-  mongoose-sequence@5.3.1:
-    resolution: {integrity: sha512-kQB1ctCdAQT8YdQzoHV0CpBRsO4RNVy03SOkzM6TQKBbGBs1ZgVS4UlKsuvBPaiPt9q5tKgQZvorGJ1awbHDqA==}
+  mongoose-sequence@6.0.1:
+    resolution: {integrity: sha512-uXnLCW9pu2V49Xw8BmdXdeRugd2mv+ntu3nT2Bbm33pNRmmvHE2GKA+8BASKoQt960McLX4VL78wkb492f6MoQ==}
     peerDependencies:
-      mongoose: '>=4'
+      mongoose: '>=5'
 
   mongoose@5.13.23:
     resolution: {integrity: sha512-Q5bo1yYOcH2wbBPP4tGmcY5VKsFkQcjUDh66YjrbneAFB3vNKQwLvteRFLuLiU17rA5SDl3UMcMJLD9VS8ng2Q==}
@@ -742,9 +742,7 @@ snapshots:
 
   array-flatten@1.1.1: {}
 
-  async@2.6.4:
-    dependencies:
-      lodash: 4.17.21
+  async@3.2.6: {}
 
   basic-auth@2.0.1:
     dependencies:
@@ -1042,9 +1040,9 @@ snapshots:
     dependencies:
       mongoose: 5.13.23
 
-  mongoose-sequence@5.3.1(mongoose@5.13.23):
+  mongoose-sequence@6.0.1(mongoose@5.13.23):
     dependencies:
-      async: 2.6.4
+      async: 3.2.6
       lodash: 4.17.21
       mongoose: 5.13.23
 
