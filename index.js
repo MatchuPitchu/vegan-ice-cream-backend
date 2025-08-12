@@ -1,5 +1,4 @@
 import cors from 'cors'
-import 'dotenv/config.js'
 import express from 'express'
 import morgan from 'morgan'
 // built-in module of NodeJS
